@@ -1,4 +1,4 @@
-# ATNT Platform
+# coffers.ai
 
 A comprehensive financial research platform for live earnings calls and real-time transcripts from 13,000+ public companies.
 
@@ -25,8 +25,8 @@ A comprehensive financial research platform for live earnings calls and real-tim
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/atnt-platform.git
-cd atnt-platform
+git clone https://github.com/yourusername/coffers-ai.git
+cd coffers-ai
 ```
 
 2. Install dependencies:
@@ -85,7 +85,7 @@ git push -u origin main
 ## 📁 Project Structure
 
 ```
-atnt-platform/
+coffers-ai/
 ├── index.html              # Main landing page
 ├── server.js               # Express.js server
 ├── package.json            # Dependencies and scripts
@@ -161,7 +161,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🆘 Support
 
-For support, email support@atnt.com or create an issue in the GitHub repository.
+For support, email support@coffers.ai or create an issue in the GitHub repository.
 
 ## 🗺️ Roadmap
 

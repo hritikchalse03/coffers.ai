@@ -344,7 +344,7 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 ATNT Backend Server running on http://localhost:${PORT}`);
+    console.log(`🚀 coffers.ai Backend Server running on http://localhost:${PORT}`);
     console.log(`📊 API endpoints available at http://localhost:${PORT}/api`);
     console.log(`🌐 Frontend available at http://localhost:${PORT}`);
 });

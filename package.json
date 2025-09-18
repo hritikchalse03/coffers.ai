@@ -1,7 +1,7 @@
 {
-  "name": "atnt-platform",
+  "name": "coffers-ai",
   "version": "1.0.0",
-  "description": "A comprehensive financial research platform",
+  "description": "coffers.ai - A comprehensive financial research platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -31,11 +31,11 @@
     "stocks",
     "api"
   ],
-  "author": "ATNT Team",
+  "author": "coffers.ai Team",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/atnt-platform.git"
+    "url": "https://github.com/yourusername/coffers-ai.git"
   },
-  "homepage": "https://atnt-platform.vercel.app"
+  "homepage": "https://coffers-ai.vercel.app"
 }
