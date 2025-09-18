@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffers.ai - Qualitative & Quantitative analysis to make precise, actionable financial decisions</title>
+    <title>Pricing - Coffers.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -186,138 +186,158 @@
             color: var(--color-black);
         }
 
-        /* Hero Section */
-        .hero {
+        /* Pricing Section */
+        .pricing {
             padding: var(--space-24) 0;
-            text-align: center;
         }
 
-        .hero h1 {
-            margin-bottom: var(--space-6);
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero p {
-            font-size: var(--font-size-xl);
-            margin-bottom: var(--space-10);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: var(--space-4);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Value Grid */
-        .value-grid {
-            padding: var(--space-24) 0;
-            background-color: var(--color-panel);
-        }
-
-        .value-grid h2 {
+        .pricing-header {
             text-align: center;
             margin-bottom: var(--space-16);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--space-8);
+        .pricing-header h1 {
+            margin-bottom: var(--space-4);
         }
 
-        .card {
+        .pricing-header p {
+            font-size: var(--font-size-lg);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--space-8);
+            margin-bottom: var(--space-16);
+        }
+
+        .pricing-card {
             background-color: var(--color-white);
             border: 1px solid var(--color-divider);
             border-radius: var(--radius-lg);
             padding: var(--space-8);
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.2s ease;
+            position: relative;
+            transition: all 0.2s ease;
         }
 
-        .card:hover {
+        .pricing-card:hover {
             box-shadow: var(--shadow-md);
         }
 
-        .card h3 {
-            margin-bottom: var(--space-3);
-            font-size: var(--font-size-xl);
+        .pricing-card.featured {
+            border-color: var(--color-black);
+            box-shadow: var(--shadow-lg);
         }
 
-        .card p {
-            font-size: var(--font-size-sm);
-        }
-
-        /* How it Works */
-        .how-it-works {
-            padding: var(--space-24) 0;
-        }
-
-        .how-it-works h2 {
-            text-align: center;
-            margin-bottom: var(--space-16);
-        }
-
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--space-12);
-        }
-
-        .step {
-            text-align: center;
-        }
-
-        .step-number {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
             background-color: var(--color-black);
             color: var(--color-white);
-            border-radius: 50%;
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
             font-weight: 600;
-            margin-bottom: var(--space-4);
-        }
-
-        .step h3 {
-            margin-bottom: var(--space-3);
-        }
-
-        /* Trust Section */
-        .trust {
-            padding: var(--space-16) 0;
-            background-color: var(--color-panel);
-            text-align: center;
-        }
-
-        .trust h3 {
-            margin-bottom: var(--space-8);
-            color: var(--color-muted);
-            font-size: var(--font-size-sm);
-            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
 
-        .trust-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: var(--space-12);
-            flex-wrap: wrap;
+        .pricing-card-header {
+            margin-bottom: var(--space-6);
         }
 
-        .trust-logo {
+        .pricing-card-name {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--space-2);
+        }
+
+        .pricing-card-price {
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            margin-bottom: var(--space-1);
+        }
+
+        .pricing-card-period {
             color: var(--color-muted);
             font-size: var(--font-size-sm);
-            font-weight: 500;
+        }
+
+        .pricing-card-description {
+            margin-bottom: var(--space-6);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: var(--space-8);
+        }
+
+        .pricing-features li {
+            padding: var(--space-2) 0;
+            font-size: var(--font-size-sm);
+            color: var(--color-muted);
+            position: relative;
+            padding-left: var(--space-6);
+        }
+
+        .pricing-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-black);
+            font-weight: 600;
+        }
+
+        .pricing-card-cta {
+            width: 100%;
+            padding: var(--space-4) var(--space-6);
+            font-size: var(--font-size-base);
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: var(--space-24) 0;
+            background-color: var(--color-panel);
+        }
+
+        .faq h2 {
+            text-align: center;
+            margin-bottom: var(--space-16);
+        }
+
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: var(--space-6);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .faq-question:hover {
+            background-color: var(--color-hover);
+        }
+
+        .faq-answer {
+            padding: 0 var(--space-6) var(--space-6);
+            color: var(--color-muted);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
         }
 
         /* Footer */
@@ -372,38 +392,13 @@
                 display: none;
             }
             
-            .hero h1 {
-                font-size: var(--font-size-4xl);
-            }
-            
-            .hero-actions {
-                flex-direction: column;
-                align-items: center;
+            .pricing-cards {
+                grid-template-columns: 1fr;
             }
             
             .container {
                 padding: 0 var(--space-4);
             }
-        }
-
-        /* Focus States for Accessibility */
-        .btn:focus,
-        .nav-links a:focus,
-        .footer-section a:focus {
-            outline: 2px solid var(--color-black);
-            outline-offset: 2px;
-        }
-
-        /* Loading States */
-        .skeleton {
-            background: linear-gradient(90deg, var(--color-panel) 25%, var(--color-divider) 50%, var(--color-panel) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
         }
     </style>
 </head>
@@ -411,9 +406,9 @@
     <!-- Header -->
     <header class="header">
         <nav class="nav container">
-            <a href="#" class="logo">●●● Coffers.ai</a>
+            <a href="../index.html" class="logo">●●● Coffers.ai</a>
             <ul class="nav-links">
-                <li><a href="#product">Product</a></li>
+                <li><a href="../index.html#product">Product</a></li>
                 <li><a href="#pricing">Pricing</a></li>
                 <li><a href="#docs">Docs</a></li>
                 <li><a href="#company">Company</a></li>
@@ -425,77 +420,103 @@
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container-sm">
-            <h1>Qualitative & Quantitative analysis to make precise, actionable financial decisions</h1>
-            <p>Get actionable insights from earnings calls and market data without reading long transcripts</p>
-            <div class="hero-actions">
-                <a href="#getstarted" class="btn btn-primary">Get started</a>
-                <a href="#demo" class="btn btn-secondary">See a demo</a>
+    <!-- Pricing Section -->
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="pricing-header">
+                <h1>Simple, transparent pricing</h1>
+                <p>Choose the plan that fits your needs. All plans include core features with no hidden fees.</p>
+            </div>
+
+            <div class="pricing-cards">
+                <!-- Free Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-card-name">Free</h3>
+                        <div class="pricing-card-price">$0</div>
+                        <div class="pricing-card-period">per month</div>
+                    </div>
+                    <p class="pricing-card-description">Perfect for individual investors getting started</p>
+                    <ul class="pricing-features">
+                        <li>5 company searches per month</li>
+                        <li>Basic earnings call access</li>
+                        <li>Standard AI insights</li>
+                        <li>Email support</li>
+                        <li>Mobile app access</li>
+                    </ul>
+                    <a href="#getstarted" class="btn btn-secondary pricing-card-cta">Start free trial</a>
+                </div>
+
+                <!-- Pro Plan -->
+                <div class="pricing-card featured">
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-card-name">Pro</h3>
+                        <div class="pricing-card-price">$99</div>
+                        <div class="pricing-card-period">per month</div>
+                    </div>
+                    <p class="pricing-card-description">For professional investors and analysts</p>
+                    <ul class="pricing-features">
+                        <li>Unlimited company searches</li>
+                        <li>Live earnings calls access</li>
+                        <li>Advanced AI insights & analysis</li>
+                        <li>Real-time market data integration</li>
+                        <li>Custom watchlists</li>
+                        <li>Priority support</li>
+                        <li>API access</li>
+                        <li>Export capabilities</li>
+                    </ul>
+                    <a href="#getstarted" class="btn btn-primary pricing-card-cta">Start free trial</a>
+                </div>
+
+                <!-- Team Plan -->
+                <div class="pricing-card">
+                    <div class="pricing-card-header">
+                        <h3 class="pricing-card-name">Team</h3>
+                        <div class="pricing-card-price">$299</div>
+                        <div class="pricing-card-period">per month</div>
+                    </div>
+                    <p class="pricing-card-description">For investment teams and firms</p>
+                    <ul class="pricing-features">
+                        <li>Everything in Pro</li>
+                        <li>Up to 10 team members</li>
+                        <li>Shared workspaces</li>
+                        <li>Team collaboration tools</li>
+                        <li>Advanced analytics dashboard</li>
+                        <li>Custom integrations</li>
+                        <li>Dedicated account manager</li>
+                        <li>White-label options</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary pricing-card-cta">Contact sales</a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Value Grid -->
-    <section class="value-grid" id="product">
+    <!-- FAQ Section -->
+    <section class="faq">
         <div class="container">
-            <h2>Everything you need for earnings analysis</h2>
-            <div class="grid">
-                <div class="card">
-                    <h3>Live Earnings Calls</h3>
-                    <p>Real-time earnings call transcripts with AI-powered analysis and key moment extraction</p>
+            <h2>Frequently asked questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <div class="faq-question">What's included in the free trial?</div>
+                    <div class="faq-answer">The free trial gives you full access to all Pro features for 14 days. No credit card required to start.</div>
                 </div>
-                <div class="card">
-                    <h3>Market Data Analysis</h3>
-                    <p>Comprehensive market data integration with contextual analysis and correlation insights</p>
+                <div class="faq-item">
+                    <div class="faq-question">Can I change plans anytime?</div>
+                    <div class="faq-answer">Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.</div>
                 </div>
-                <div class="card">
-                    <h3>AI-Powered Insights</h3>
-                    <p>Instant analysis of earnings calls with sentiment tracking and trend identification</p>
+                <div class="faq-item">
+                    <div class="faq-question">What payment methods do you accept?</div>
+                    <div class="faq-answer">We accept all major credit cards, PayPal, and bank transfers for annual plans.</div>
                 </div>
-                <div class="card">
-                    <h3>Real-Time Updates</h3>
-                    <p>Live market data feeds with earnings call notifications and price correlation alerts</p>
+                <div class="faq-item">
+                    <div class="faq-question">Is there a setup fee?</div>
+                    <div class="faq-answer">No setup fees or hidden costs. You only pay the monthly or annual subscription fee.</div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How it Works -->
-    <section class="how-it-works">
-        <div class="container">
-            <h2>How it works</h2>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <h3>Search company</h3>
-                    <p>Find any public company by ticker symbol or name. Access comprehensive earnings data and market analysis</p>
+                <div class="faq-item">
+                    <div class="faq-question">Do you offer enterprise pricing?</div>
+                    <div class="faq-answer">Yes, we offer custom enterprise plans for large organizations. Contact our sales team for details.</div>
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <h3>Join earnings call</h3>
-                    <p>Join live earnings calls or access archived transcripts. Real-time transcription with instant AI processing</p>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <h3>Analyze with AI</h3>
-                    <p>Get instant insights, key moments, sentiment analysis, and actionable recommendations powered by advanced AI</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trust Section -->
-    <section class="trust">
-        <div class="container">
-            <h3>Trusted by financial professionals</h3>
-            <div class="trust-logos">
-                <div class="trust-logo">Goldman Sachs</div>
-                <div class="trust-logo">Morgan Stanley</div>
-                <div class="trust-logo">BlackRock</div>
-                <div class="trust-logo">Vanguard</div>
-                <div class="trust-logo">Fidelity</div>
             </div>
         </div>
     </section>
@@ -548,7 +569,23 @@
     </footer>
 
     <script>
-        // Simple smooth scrolling for anchor links
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                const isOpen = answer.style.display === 'block';
+                
+                // Close all other answers
+                document.querySelectorAll('.faq-answer').forEach(ans => {
+                    ans.style.display = 'none';
+                });
+                
+                // Toggle current answer
+                answer.style.display = isOpen ? 'none' : 'block';
+            });
+        });
+
+        // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -560,11 +597,6 @@
                     });
                 }
             });
-        });
-
-        // Add loading states for demo purposes
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('coffers.ai loaded successfully');
         });
     </script>
 </body>
