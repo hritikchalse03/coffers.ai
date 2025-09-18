@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - ATNT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        
+        .register-container {
+            background: #111111;
+            padding: 3rem;
+            border-radius: 16px;
+            border: 1px solid #333333;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+        
+        .logo {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .form-title {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .form-subtitle {
+            text-align: center;
+            color: #9ca3af;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #9ca3af;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #333333;
+            border-radius: 8px;
+            background: #000000;
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .form-input::placeholder {
+            color: #6b7280;
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .strength-weak { color: #ef4444; }
+        .strength-medium { color: #f59e0b; }
+        .strength-strong { color: #10b981; }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .checkbox-input {
+            margin-top: 0.25rem;
+        }
+        
+        .checkbox-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        .checkbox-label a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+        
+        .register-button {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 1rem;
+        }
+        
+        .register-button:hover {
+            background: #2563eb;
+        }
+        
+        .register-button:disabled {
+            background: #374151;
+            cursor: not-allowed;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #333333;
+        }
+        
+        .divider span {
+            background: #111111;
+            padding: 0 1rem;
+            color: #6b7280;
+        }
+        
+        .login-link {
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        .login-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover {
+            color: #ffffff;
+        }
+        
+        .message {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .error-message {
+            background: #7f1d1d;
+            border: 1px solid #dc2626;
+            color: #fca5a5;
+        }
+        
+        .success-message {
+            background: #064e3b;
+            border: 1px solid #10b981;
+            color: #6ee7b7;
+        }
+        
+        .success-actions {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .success-link {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        
+        .success-link:hover {
+            background: #2563eb;
+        }
+        
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .register-container {
+                padding: 2rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Home</a>
+    
+    <div class="register-container">
+        <div class="logo">ATNT</div>
+        <h1 class="form-title">Create Your Account</h1>
+        <p class="form-subtitle">Join thousands of investors using ATNT for real-time market insights</p>
+        
+        <div id="errorMessage" class="message error-message"></div>
+        <div id="successMessage" class="message success-message"></div>
+        
+        <form id="registerForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input 
+                        type="text" 
+                        id="firstName" 
+                        class="form-input" 
+                        placeholder="John"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input 
+                        type="text" 
+                        id="lastName" 
+                        class="form-input" 
+                        placeholder="Doe"
+                        required
+                    >
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email Address</label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    class="form-input" 
+                    placeholder="john@example.com"
+                    required
+                >
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    class="form-input" 
+                    placeholder="Create a strong password"
+                    required
+                >
+                <div id="passwordStrength" class="password-strength"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input 
+                    type="password" 
+                    id="confirmPassword" 
+                    class="form-input" 
+                    placeholder="Confirm your password"
+                    required
+                >
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="terms" class="checkbox-input" required>
+                <label for="terms" class="checkbox-label">
+                    I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="newsletter" class="checkbox-input">
+                <label for="newsletter" class="checkbox-label">
+                    Send me updates about new features and market insights
+                </label>
+            </div>
+            
+            <button type="submit" class="register-button" id="registerBtn">
+                Create Account
+            </button>
+        </form>
+        
+        <div class="divider">
+            <span>or</span>
+        </div>
+        
+        <div class="login-link">
+            Already have an account? <a href="login.html" onclick="goToLogin(event)">Sign in here</a>
+        </div>
+    </div>
+    
+    <script>
+        // Password strength checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthDiv = document.getElementById('passwordStrength');
+            
+            if (password.length === 0) {
+                strengthDiv.textContent = '';
+                return;
+            }
+            
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            if (strength < 3) {
+                strengthDiv.textContent = '🔴 Weak password';
+                strengthDiv.className = 'password-strength strength-weak';
+            } else if (strength < 4) {
+                strengthDiv.textContent = '🟡 Medium strength';
+                strengthDiv.className = 'password-strength strength-medium';
+            } else {
+                strengthDiv.textContent = '🟢 Strong password';
+                strengthDiv.className = 'password-strength strength-strong';
+            }
+        });
+        
+        // Form submission
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const terms = document.getElementById('terms').checked;
+            const newsletter = document.getElementById('newsletter').checked;
+            
+            const registerBtn = document.getElementById('registerBtn');
+            const errorMessage = document.getElementById('errorMessage');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Hide previous messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+            
+            // Validation
+            if (!firstName || !lastName || !email || !password) {
+                showError('❌ Please fill in all required fields!');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('❌ Passwords do not match!');
+                return;
+            }
+            
+            if (password.length < 8) {
+                showError('❌ Password must be at least 8 characters long!');
+                return;
+            }
+            
+            if (!terms) {
+                showError('❌ You must agree to the Terms of Service!');
+                return;
+            }
+            
+            // Show loading state
+            registerBtn.textContent = 'Creating Account...';
+            registerBtn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                try {
+                    // Check if user already exists
+                    const users = JSON.parse(localStorage.getItem('atnt_users') || '[]');
+                    const existingUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+                    
+                    if (existingUser) {
+                        showError('❌ An account with this email already exists!');
+                        registerBtn.textContent = 'Create Account';
+                        registerBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Create new user
+                    const newUser = {
+                        id: Date.now(),
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email.toLowerCase(),
+                        password: password, // In real app, this would be hashed
+                        newsletter: newsletter,
+                        createdAt: new Date().toISOString(),
+                        subscriptionTier: 'FREE'
+                    };
+                    
+                    users.push(newUser);
+                    localStorage.setItem('atnt_users', JSON.stringify(users));
+                    
+                    // Show success message
+                    showSuccess(`🎉 Welcome to ATNT, ${firstName}! Your account has been created successfully.`);
+                    
+                    // Hide the form
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.querySelector('.login-link').style.display = 'none';
+                    
+                } catch (error) {
+                    showError('❌ Something went wrong. Please try again.');
+                    registerBtn.textContent = 'Create Account';
+                    registerBtn.disabled = false;
+                }
+            }, 1500);
+        });
+        
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            // Scroll to top to show error
+            document.querySelector('.register-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.innerHTML = `
+                ${message}
+                <div class="success-actions">
+                    <a href="login.html" class="success-link" onclick="goToLogin(event)">Continue to Login →</a>
+                </div>
+            `;
+            successDiv.style.display = 'block';
+            // Scroll to top to show success
+            document.querySelector('.register-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function goToLogin(event) {
+            event.preventDefault();
+            try {
+                // Try to navigate to login page
+                window.location.href = 'login.html';
+            } catch (error) {
+                // If that fails, try alternative method
+                window.open('login.html', '_self');
+            }
+        }
+        
+        function showTerms() {
+            alert('📄 Terms of Service\n\n• Use ATNT responsibly\n• Respect other users\n• No unauthorized access\n• We protect your data\n\n(Full terms coming soon!)');
+        }
+        
+        function showPrivacy() {
+            alert('🔒 Privacy Policy\n\n• We protect your personal data\n• No selling of user information\n• Secure data storage\n• You control your data\n\n(Full policy coming soon!)');
+        }
+        
+        console.log('📝 ATNT Registration System v2.0 Loaded');
+        console.log('🔧 Fixed redirect issues');
+        console.log('📅 Day 3: Enhanced Registration Active');
+    </script>
+</body>
+</html>

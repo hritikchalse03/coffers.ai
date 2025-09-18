@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Inc. (AAPL) - ATNT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: #111111;
+            border-bottom: 1px solid #333333;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #3b82f6;
+        }
+        
+        .back-btn {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .back-btn:hover {
+            color: #ffffff;
+        }
+        
+        /* Company Header */
+        .company-header {
+            background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+            border-bottom: 1px solid #333333;
+            padding: 2rem 0;
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .company-main {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.3);
+        }
+        
+        .company-info {
+            flex: 1;
+        }
+        
+        .company-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .company-symbol {
+            font-size: 1.2rem;
+            color: #3b82f6;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .company-description {
+            color: #9ca3af;
+            font-size: 1rem;
+            max-width: 600px;
+        }
+        
+        .company-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .follow-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .follow-btn:hover {
+            background: #2563eb;
+        }
+        
+        .follow-btn.following {
+            background: #10b981;
+        }
+        
+        .alert-btn {
+            background: transparent;
+            color: #9ca3af;
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .alert-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        /* Key Metrics */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .metric-card {
+            background: #0a0a0a;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        
+        .metric-change {
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+        
+        .metric-change.positive {
+            color: #10b981;
+        }
+        
+        .metric-change.negative {
+            color: #ef4444;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+        
+        /* Content Tabs */
+        .content-tabs {
+            margin-bottom: 2rem;
+        }
+        
+        .tab-list {
+            display: flex;
+            border-bottom: 1px solid #333333;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-button {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .tab-button.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .tab-button:hover {
+            color: #ffffff;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Recent Events */
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .event-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .event-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .event-type {
+            background: #1e3a8a;
+            color: #3b82f6;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .event-date {
+            color: #6b7280;
+            font-size: 0.8rem;
+        }
+        
+        .event-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-summary {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        /* Financial Data */
+        .financial-table {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #0a0a0a;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #333333;
+            font-weight: 600;
+        }
+        
+        .table-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #333333;
+            transition: background 0.2s;
+        }
+        
+        .table-row:hover {
+            background: #1a1a1a;
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .table-cell {
+            display: flex;
+            align-items: center;
+        }
+        
+        .table-cell.metric {
+            font-weight: 600;
+        }
+        
+        .table-cell.number {
+            justify-content: flex-end;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .growth-indicator {
+            margin-left: 0.5rem;
+            font-size: 0.8rem;
+        }
+        
+        .growth-positive {
+            color: #10b981;
+        }
+        
+        .growth-negative {
+            color: #ef4444;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .sidebar-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .sidebar-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #333333;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .info-value {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .analyst-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #333333;
+        }
+        
+        .analyst-item:last-child {
+            border-bottom: none;
+        }
+        
+        .analyst-info {
+            flex: 1;
+        }
+        
+        .analyst-firm {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .analyst-rating {
+            color: #9ca3af;
+            font-size: 0.8rem;
+        }
+        
+        .price-target {
+            font-weight: 600;
+            color: #3b82f6;
+        }
+        
+        /* News Items */
+        .news-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid #333333;
+        }
+        
+        .news-item:last-child {
+            border-bottom: none;
+        }
+        
+        .news-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .news-title:hover {
+            color: #3b82f6;
+        }
+        
+        .news-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .company-main {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .key-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container,
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .key-metrics {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">ATNT</a>
+            <nav class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="#" class="active">Companies</a>
+                <a href="#">Live Events</a>
+                <a href="search.html">Search</a>
+            </nav>
+            <a href="search.html" class="back-btn">← Back to Search</a>
+        </div>
+    </header>
+
+    <!-- Company Header -->
+    <section class="company-header">
+        <div class="header-container">
+            <div class="company-main">
+                <div class="company-logo">🍎</div>
+                <div class="company-info">
+                    <h1 class="company-name">Apple Inc.</h1>
+                    <div class="company-symbol">AAPL • NASDAQ</div>
+                    <p class="company-description">
+                        Apple Inc. designs, manufactures, and markets smartphones, personal computers, tablets, wearables, and accessories worldwide. The company serves consumers, and small and mid-sized businesses; and the education, enterprise, and government markets.
+                    </p>
+                </div>
+                <div class="company-actions">
+                    <button class="follow-btn" id="followBtn" onclick="toggleFollow()">
+                        + Follow
+                    </button>
+                    <button class="alert-btn" onclick="setAlert()">
+                        🔔 Set Alert
+                    </button>
+                </div>
+            </div>
+            
+            <div class="key-metrics">
+                <div class="metric-card">
+                    <div class="metric-value">$189.84</div>
+                    <div class="metric-label">Stock Price</div>
+                    <div class="metric-change positive">+2.34 (+1.25%)</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$2.95T</div>
+                    <div class="metric-label">Market Cap</div>
+                    <div class="metric-change positive">+$42.1B</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$383.3B</div>
+                    <div class="metric-label">Revenue (TTM)</div>
+                    <div class="metric-change positive">+8.2%</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">28.5</div>
+                    <div class="metric-label">P/E Ratio</div>
+                    <div class="metric-change negative">-1.2</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">0.53%</div>
+                    <div class="metric-label">Dividend Yield</div>
+                    <div class="metric-change positive">+0.02%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="content-area">
+            <!-- Tabs -->
+            <div class="content-tabs">
+                <div class="tab-list">
+                    <button class="tab-button active" onclick="switchTab('events')">Recent Events</button>
+                    <button class="tab-button" onclick="switchTab('financials')">Financials</button>
+                    <button class="tab-button" onclick="switchTab('transcripts')">Transcripts</button>
+                    <button class="tab-button" onclick="switchTab('documents')">Documents</button>
+                </div>
+                
+                <!-- Recent Events Tab -->
+                <div class="tab-content active" id="events">
+                    <div class="events-list">
+                        <div class="event-card" onclick="openTranscript()">
+                            <div class="event-header">
+                                <span class="event-type">🎙️ Earnings Call</span>
+                                <span class="event-date">Dec 15, 2024</span>
+                            </div>
+                            <div class="event-title">Q4 2024 Earnings Call</div>
+                            <div class="event-summary">
+                                Record-breaking quarter with revenue of $94.9B (+8% YoY). Strong iPhone 15 performance and Services growth. Management discussed AI initiatives and 2025 outlook.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📄 SEC Filing</span>
+                                <span class="event-date">Dec 10, 2024</span>
+                            </div>
+                            <div class="event-title">Form 10-Q Filed</div>
+                            <div class="event-summary">
+                                Quarterly report providing detailed financial information and analysis of business performance for Q4 2024.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📰 Press Release</span>
+                                <span class="event-date">Dec 8, 2024</span>
+                            </div>
+                            <div class="event-title">iPhone 15 Sales Update</div>
+                            <div class="event-summary">
+                                Apple announces strong iPhone 15 adoption rates, particularly in Pro models. New features driving upgrade cycle acceleration.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">🎯 Conference</span>
+                                <span class="event-date">Nov 28, 2024</span>
+                            </div>
+                            <div class="event-title">Goldman Sachs Technology Conference</div>
+                            <div class="event-summary">
+                                Tim Cook presented at Goldman Sachs conference, discussing Apple's AI strategy, Services growth, and long-term vision.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financials Tab -->
+                <div class="tab-content" id="financials">
+                    <div class="financial-table">
+                        <div class="table-header">Financial Performance (in billions)</div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Metric</div>
+                            <div class="table-cell">Q4 2024</div>
+                            <div class="table-cell">Q3 2024</div>
+                            <div class="table-cell">Q4 2023</div>
+                            <div class="table-cell">Growth</div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Revenue</div>
+                            <div class="table-cell number">$94.9</div>
+                            <div class="table-cell number">$81.8</div>
+                            <div class="table-cell number">$89.5</div>
+                            <div class="table-cell number">+6.0% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">iPhone</div>
+                            <div class="table-cell number">$46.2</div>
+                            <div class="table-cell number">$39.7</div>
+                            <div class="table-cell number">$43.8</div>
+                            <div class="table-cell number">+5.5% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Services</div>
+                            <div class="table-cell number">$22.3</div>
+                            <div class="table-cell number">$21.2</div>
+                            <div class="table-cell number">$20.8</div>
+                            <div class="table-cell number">+7.2% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Mac</div>
+                            <div class="table-cell number">$7.7</div>
+                            <div class="table-cell number">$7.2</div>
+                            <div class="table-cell number">$7.6</div>
+                            <div class="table-cell number">+1.3% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">iPad</div>
+                            <div class="table-cell number">$6.4</div>
+                            <div class="table-cell number">$6.8</div>
+                            <div class="table-cell number">$6.4</div>
+                            <div class="table-cell number">0.0% <span class="growth-indicator">→</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Wearables</div>
+                            <div class="table-cell number">$12.0</div>
+                            <div class="table-cell number">$8.3</div>
+                            <div class="table-cell number">$11.5</div>
+                            <div class="table-cell number">+4.3% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                        <div class="table-row">
+                            <div class="table-cell metric">Gross Margin</div>
+                            <div class="table-cell number">45.0%</div>
+                            <div class="table-cell number">44.5%</div>
+                            <div class="table-cell number">44.8%</div>
+                            <div class="table-cell number">+0.2% <span class="growth-indicator growth-positive">↗</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Transcripts Tab -->
+                <div class="tab-content" id="transcripts">
+                    <div class="events-list">
+                        <div class="event-card" onclick="openTranscript()">
+                            <div class="event-header">
+                                <span class="event-type">📄 Transcript</span>
+                                <span class="event-date">Dec 15, 2024</span>
+                            </div>
+                            <div class="event-title">Q4 2024 Earnings Call Transcript</div>
+                            <div class="event-summary">
+                                Full transcript with speaker identification, timestamps, and AI-generated insights. 58 minutes, 12 participants.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📄 Transcript</span>
+                                <span class="event-date">Nov 28, 2024</span>
+                            </div>
+                            <div class="event-title">Goldman Sachs Conference Transcript</div>
+                            <div class="event-summary">
+                                Tim Cook's presentation and Q&A session. Focus on AI strategy and future product roadmap. 42 minutes.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📄 Transcript</span>
+                                <span class="event-date">Oct 12, 2024</span>
+                            </div>
+                            <div class="event-title">Q3 2024 Earnings Call Transcript</div>
+                            <div class="event-summary">
+                                Previous quarter results and guidance discussion. Strong Services performance highlighted. 52 minutes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Documents Tab -->
+                <div class="tab-content" id="documents">
+                    <div class="events-list">
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📊 Report</span>
+                                <span class="event-date">Dec 15, 2024</span>
+                            </div>
+                            <div class="event-title">Q4 2024 Earnings Report</div>
+                            <div class="event-summary">
+                                Comprehensive quarterly financial report with detailed breakdowns by product category and geographic region. 28 pages.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📄 Filing</span>
+                                <span class="event-date">Dec 10, 2024</span>
+                            </div>
+                            <div class="event-title">Form 10-Q</div>
+                            <div class="event-summary">
+                                SEC quarterly report providing unaudited financial statements and management discussion. 45 pages.
+                            </div>
+                        </div>
+                        
+                        <div class="event-card">
+                            <div class="event-header">
+                                <span class="event-type">📋 Presentation</span>
+                                <span class="event-date">Dec 15, 2024</span>
+                            </div>
+                            <div class="event-title">Q4 2024 Earnings Presentation</div>
+                            <div class="event-summary">
+                                Slide deck used during earnings call with key financial highlights and strategic initiatives. 22 slides.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Company Details -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Company Details</div>
+                <div class="info-item">
+                    <span class="info-label">Sector</span>
+                    <span class="info-value">Technology</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Industry</span>
+                    <span class="info-value">Consumer Electronics</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Employees</span>
+                    <span class="info-value">164,000</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Founded</span>
+                    <span class="info-value">1976</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Headquarters</span>
+                    <span class="info-value">Cupertino, CA</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">CEO</span>
+                    <span class="info-value">Tim Cook</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Website</span>
+                    <span class="info-value">apple.com</span>
+                </div>
+            </div>
+            
+            <!-- Analyst Coverage -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Analyst Coverage</div>
+                <div class="analyst-item">
+                    <div class="analyst-info">
+                        <div class="analyst-firm">Morgan Stanley</div>
+                        <div class="analyst-rating">Buy • Dec 12</div>
+                    </div>
+                    <div class="price-target">$220</div>
+                </div>
+                <div class="analyst-item">
+                    <div class="analyst-info">
+                        <div class="analyst-firm">Goldman Sachs</div>
+                        <div class="analyst-rating">Buy • Dec 10</div>
+                    </div>
+                    <div class="price-target">$210</div>
+                </div>
+                <div class="analyst-item">
+                    <div class="analyst-info">
+                        <div class="analyst-firm">JP Morgan</div>
+                        <div class="analyst-rating">Overweight • Dec 8</div>
+                    </div>
+                    <div class="price-target">$205</div>
+                </div>
+                <div class="analyst-item">
+                    <div class="analyst-info">
+                        <div class="analyst-firm">Wedbush</div>
+                        <div class="analyst-rating">Outperform • Dec 5</div>
+                    </div>
+                    <div class="price-target">$225</div>
+                </div>
+            </div>
+            
+            <!-- Recent News -->
+            <div class="sidebar-card">
+                <div class="sidebar-title">Recent News</div>
+                <div class="news-item">
+                    <div class="news-title">Apple Reports Record Q4 Results</div>
+                    <div class="news-meta">
+                        <span>Reuters</span>
+                        <span>2 hours ago</span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">iPhone 15 Demand Exceeds Expectations</div>
+                    <div class="news-meta">
+                        <span>Bloomberg</span>
+                        <span>5 hours ago</span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">Apple AI Strategy Gains Momentum</div>
+                    <div class="news-meta">
+                        <span>WSJ</span>
+                        <span>1 day ago</span>
+                    </div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">Services Revenue Hits New High</div>
+                    <div class="news-meta">
+                        <span>CNBC</span>
+                        <span>2 days ago</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isFollowing = false;
+        
+        function switchTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+        
+        function toggleFollow() {
+            const btn = document.getElementById('followBtn');
+            isFollowing = !isFollowing;
+            
+            if (isFollowing) {
+                btn.textContent = '✓ Following';
+                btn.classList.add('following');
+                alert('🎉 You are now following Apple Inc.!\n\nYou\'ll receive notifications about:\n• New earnings calls\n• Important announcements\n• Analyst updates\n• Price movements');
+            } else {
+                btn.textContent = '+ Follow';
+                btn.classList.remove('following');
+                alert('👋 You are no longer following Apple Inc.');
+            }
+        }
+        
+        function setAlert() {
+            alert('🔔 Set alerts for Apple Inc.:\n\n• Keyword mentions in earnings calls\n• Revenue threshold alerts ($95B+)\n• Stock price movements (±5%)\n• Management changes\n• New product announcements\n\n(Alert system coming in Days 11-12)');
+        }
+        
+        function openTranscript() {
+            window.location.href = 'transcript.html';
+        }
+        
+        console.log('🏢 ATNT Company Profile Loaded');
+        console.log('📊 Financial data displayed');
+        console.log('📈 Real-time metrics active');
+        console.log('📅 Day 6: Company Pages Complete');
+    </script>
+</body>
+</html>

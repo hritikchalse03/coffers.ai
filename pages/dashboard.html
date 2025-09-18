@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ATNT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: #111111;
+            border-bottom: 1px solid #333333;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: #3b82f6;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .logout-btn {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .logout-btn:hover {
+            color: #ef4444;
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .welcome-section {
+            margin-bottom: 3rem;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .welcome-subtitle {
+            color: #9ca3af;
+            font-size: 1.1rem;
+        }
+        
+        .subscription-badge {
+            display: inline-block;
+            background: #064e3b;
+            color: #6ee7b7;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .dashboard-card {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            border-color: #3b82f6;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            background: #1e3a8a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .card-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-description {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        /* Live Events Section */
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        
+        .events-list {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .event-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid #333333;
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            transition: background 0.2s;
+        }
+        
+        .event-item:last-child {
+            border-bottom: none;
+        }
+        
+        .event-item:hover {
+            background: #1a1a1a;
+        }
+        
+        .event-info {
+            flex: 1;
+        }
+        
+        .event-company {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .event-details {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .event-status {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-live {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .status-upcoming {
+            background: #374151;
+            color: #9ca3af;
+        }
+        
+        .join-btn {
+            background: #3b82f6;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .join-btn:hover {
+            background: #2563eb;
+        }
+        
+        .reminder-btn {
+            background: transparent;
+            color: #9ca3af;
+            padding: 0.5rem 1rem;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .reminder-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-btn {
+            background: #111111;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .action-btn:hover {
+            border-color: #3b82f6;
+            background: #1a1a1a;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .event-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .event-status {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">ATNT</a>
+            <nav class="nav-links">
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Companies</a>
+                <a href="#">Live Events</a>
+                <a href="#">Search</a>
+                <a href="#">Watchlist</a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <span id="userName">User</span>
+                </div>
+                <a href="#" class="logout-btn" onclick="logout()">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">Welcome back, <span id="welcomeName">User</span>! 👋</h1>
+            <p class="welcome-subtitle">Here's what's happening in the markets today</p>
+            <span class="subscription-badge" id="subscriptionBadge">FREE PLAN</span>
+        </section>
+
+        <!-- Dashboard Stats -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">🎙️</div>
+                    <div class="card-title">Live Events Today</div>
+                </div>
+                <div class="card-value">12</div>
+                <div class="card-description">Earnings calls happening today</div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">👁️</div>
+                    <div class="card-title">Watchlist</div>
+                </div>
+                <div class="card-value">8</div>
+                <div class="card-description">Companies you're following</div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">🔍</div>
+                    <div class="card-title">Searches</div>
+                </div>
+                <div class="card-value">24</div>
+                <div class="card-description">Searches performed this month</div>
+            </div>
+            
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <div class="card-title">Insights</div>
+                </div>
+                <div class="card-value">156</div>
+                <div class="card-description">AI insights generated</div>
+            </div>
+        </div>
+
+        <!-- Live & Upcoming Events -->
+        <section>
+            <h2 class="section-title">🔴 Live & Upcoming Events</h2>
+            <div class="events-list">
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-company">Apple Inc. (AAPL)</div>
+                        <div class="event-details">Q4 2024 Earnings Call • 4:30 PM EST</div>
+                    </div>
+                    <div class="event-status">
+                        <span class="status-badge status-live">🔴 Live</span>
+                        <button class="join-btn" onclick="joinLive('AAPL')">Join Live</button>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-company">Microsoft Corporation (MSFT)</div>
+                        <div class="event-details">Q4 2024 Earnings Call • 5:00 PM EST</div>
+                    </div>
+                    <div class="event-status">
+                        <span class="status-badge status-upcoming">Upcoming</span>
+                        <button class="reminder-btn" onclick="setReminder('MSFT')">Set Reminder</button>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-company">Tesla, Inc. (TSLA)</div>
+                        <div class="event-details">Q4 2024 Earnings Call • 6:00 PM EST</div>
+                    </div>
+                    <div class="event-status">
+                        <span class="status-badge status-upcoming">Upcoming</span>
+                        <button class="reminder-btn" onclick="setReminder('TSLA')">Set Reminder</button>
+                    </div>
+                </div>
+                
+                <div class="event-item">
+                    <div class="event-info">
+                        <div class="event-company">Amazon.com Inc. (AMZN)</div>
+                        <div class="event-details">Q4 2024 Earnings Call • 7:00 PM EST</div>
+                    </div>
+                    <div class="event-status">
+                        <span class="status-badge status-upcoming">Upcoming</span>
+                        <button class="reminder-btn" onclick="setReminder('AMZN')">Set Reminder</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <a href="#" class="action-btn" onclick="searchTranscripts()">
+                🔍 Search Transcripts
+            </a>
+            <a href="#" class="action-btn" onclick="viewWatchlist()">
+                👁️ Manage Watchlist
+            </a>
+            <a href="#" class="action-btn" onclick="upgradeAccount()">
+                ⭐ Upgrade to Pro
+            </a>
+            <a href="#" class="action-btn" onclick="viewSettings()">
+                ⚙️ Account Settings
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Load user data when page loads
+        window.addEventListener('load', function() {
+            const currentUser = JSON.parse(localStorage.getItem('atnt_current_user'));
+            
+            if (!currentUser) {
+                // Redirect to login if no user is logged in
+                alert('🔐 Please log in to access your dashboard');
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // Update user interface with user data
+            document.getElementById('userName').textContent = currentUser.firstName;
+            document.getElementById('welcomeName').textContent = currentUser.firstName;
+            document.getElementById('userAvatar').textContent = currentUser.firstName.charAt(0).toUpperCase();
+            document.getElementById('subscriptionBadge').textContent = `${currentUser.subscriptionTier} PLAN`;
+            
+            console.log('👤 User loaded:', currentUser.firstName + ' ' + currentUser.lastName);
+            console.log('📊 Dashboard initialized successfully');
+        });
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('atnt_current_user');
+                alert('👋 You have been logged out successfully');
+                window.location.href = '../index.html';
+            }
+        }
+        
+        function joinLive(symbol) {
+            alert(`🔴 Joining live call for ${symbol}!\n\n🎙️ Live audio streaming\n📝 Real-time transcription\n📊 AI-powered insights\n\n(Live streaming coming in Days 8-10)`);
+        }
+        
+        function setReminder(symbol) {
+            alert(`⏰ Reminder set for ${symbol} earnings call!\n\n📧 Email notification enabled\n📱 Push notification enabled\n\n(Notification system coming in Days 5-7)`);
+        }
+        
+        function searchTranscripts() {
+            alert('🔍 Advanced transcript search coming in Day 5!\n\n🤖 AI-powered search\n📊 Sentiment analysis\n🎯 Keyword highlighting');
+        }
+        
+        function viewWatchlist() {
+            alert('👁️ Watchlist management coming in Day 6!\n\n⭐ Save favorite companies\n🔔 Custom alerts\n📈 Performance tracking');
+        }
+        
+        function upgradeAccount() {
+            alert('⭐ Subscription system coming in Day 7!\n\n💳 Stripe integration\n📊 Pro features\n🎯 Advanced analytics');
+        }
+        
+        function viewSettings() {
+            alert('⚙️ Account settings coming in Day 4!\n\n👤 Profile management\n🔔 Notification preferences\n🔒 Security settings');
+        }
+        
+        console.log('📊 ATNT Dashboard Loaded');
+        console.log('📅 Day 3 Complete: Full Authentication System');
+        console.log('🚀 Next: Connect to real APIs and live data');
+    </script>
+</body>
+</html>

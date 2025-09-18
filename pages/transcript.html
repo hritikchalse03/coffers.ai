@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple Q4 2024 Earnings Call - ATNT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: #111111;
+            border-bottom: 1px solid #333333;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+        
+        .back-btn {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .back-btn:hover {
+            color: #ffffff;
+        }
+        
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            padding: 2rem;
+            min-height: calc(100vh - 80px);
+        }
+        
+        /* Left Panel - Transcript */
+        .transcript-panel {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .transcript-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #333333;
+            background: #0a0a0a;
+        }
+        
+        .company-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .company-logo {
+            width: 48px;
+            height: 48px;
+            background: #3b82f6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .company-details h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .company-details p {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .event-meta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            background: #1a1a1a;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        .meta-item strong {
+            color: #ffffff;
+        }
+        
+        /* Search Bar */
+        .search-container {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #333333;
+            background: #0a0a0a;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: #000000;
+            border: 2px solid #333333;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            transition: border-color 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .search-input::placeholder {
+            color: #6b7280;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+        }
+        
+        .search-results {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #9ca3af;
+        }
+        
+        /* Transcript Content */
+        .transcript-content {
+            padding: 1.5rem;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+        }
+        
+        .transcript-segment {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        
+        .transcript-segment:hover {
+            background: #1a1a1a;
+        }
+        
+        .transcript-segment.highlighted {
+            background: #1e3a8a;
+            border-left: 4px solid #3b82f6;
+        }
+        
+        .segment-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .speaker-name {
+            font-weight: 600;
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+        
+        .segment-time {
+            color: #6b7280;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .segment-time:hover {
+            color: #3b82f6;
+        }
+        
+        .segment-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #e5e7eb;
+        }
+        
+        .highlight {
+            background: #fbbf24;
+            color: #000000;
+            padding: 0.1rem 0.2rem;
+            border-radius: 3px;
+        }
+        
+        /* Right Panel - Controls */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        /* Audio Player */
+        .audio-player {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .player-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .play-button {
+            width: 48px;
+            height: 48px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .play-button:hover {
+            background: #2563eb;
+        }
+        
+        .playback-info {
+            flex: 1;
+        }
+        
+        .current-time {
+            font-weight: 600;
+            color: #ffffff;
+        }
+        
+        .total-time {
+            color: #9ca3af;
+            font-size: 0.9rem;
+        }
+        
+        .progress-container {
+            margin: 1rem 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #333333;
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            width: 23%;
+            transition: width 0.1s;
+        }
+        
+        .playback-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .speed-control {
+            background: #000000;
+            border: 1px solid #333333;
+            color: #ffffff;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .volume-slider {
+            width: 60px;
+            height: 4px;
+            background: #333333;
+            border-radius: 2px;
+            cursor: pointer;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .actions-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .action-btn {
+            width: 100%;
+            background: transparent;
+            border: 1px solid #333333;
+            color: #9ca3af;
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+            background: #0a0a0a;
+        }
+        
+        /* Key Insights */
+        .insights-panel {
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .insights-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .insight-item {
+            padding: 0.75rem;
+            background: #0a0a0a;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .insight-category {
+            font-size: 0.7rem;
+            color: #3b82f6;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .insight-text {
+            font-size: 0.85rem;
+            color: #e5e7eb;
+            line-height: 1.4;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .controls-panel {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">ATNT</a>
+            <nav class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="#">Companies</a>
+                <a href="#">Live Events</a>
+                <a href="#">Search</a>
+            </nav>
+            <a href="dashboard.html" class="back-btn">← Back to Dashboard</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-container">
+        <!-- Left Panel - Transcript -->
+        <div class="transcript-panel">
+            <!-- Header -->
+            <div class="transcript-header">
+                <div class="company-info">
+                    <div class="company-logo">🍎</div>
+                    <div class="company-details">
+                        <h1>Apple Inc. Q4 2024 Earnings Call</h1>
+                        <p>AAPL • NASDAQ • December 15, 2024</p>
+                    </div>
+                </div>
+                
+                <div class="event-meta">
+                    <div class="meta-item">
+                        <strong>Duration:</strong> 58:42
+                    </div>
+                    <div class="meta-item">
+                        <strong>Participants:</strong> 12
+                    </div>
+                    <div class="meta-item">
+                        <strong>Status:</strong> Completed
+                    </div>
+                    <div class="meta-item">
+                        <strong>Revenue:</strong> $94.9B
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Search -->
+            <div class="search-container">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        placeholder="Search in transcript..." 
+                        id="transcriptSearch"
+                    >
+                </div>
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            
+            <!-- Transcript Content -->
+            <div class="transcript-content" id="transcriptContent">
+                <div class="transcript-segment" data-time="0:00">
+                    <div class="segment-header">
+                        <span class="speaker-name">Tim Cook (CEO)</span>
+                        <span class="segment-time" onclick="seekTo(0)">0:00</span>
+                    </div>
+                    <div class="segment-text">
+                        Good afternoon, and thank you for joining us today. I'm pleased to report that Apple delivered another record-breaking quarter with revenue of $94.9 billion, up 8% year over year. This represents our strongest Q4 performance ever, driven by exceptional iPhone sales and continued growth in our Services business.
+                    </div>
+                </div>
+                
+                <div class="transcript-segment" data-time="0:45">
+                    <div class="segment-header">
+                        <span class="speaker-name">Tim Cook (CEO)</span>
+                        <span class="segment-time" onclick="seekTo(45)">0:45</span>
+                    </div>
+                    <div class="segment-text">
+                        iPhone revenue reached $46.2 billion, representing 15% growth compared to the same quarter last year. The iPhone 15 lineup has been incredibly well received by customers worldwide, with particular strength in our Pro models. We're seeing strong adoption of our new features, including the Action Button and our advanced camera system.
+                    </div>
+                </div>
+                
+                <div class="transcript-segment" data-time="1:30">
+                    <div class="segment-header">
+                        <span class="speaker-name">Luca Maestri (CFO)</span>
+                        <span class="segment-time" onclick="seekTo(90)">1:30</span>
+                    </div>
+                    <div class="segment-text">
+                        Thank you, Tim. Our Services business continues to be a key growth driver, generating $22.3 billion in revenue, up 16% year over year. This growth was broad-based across all major service categories, including the App Store, iCloud, Apple Music, and our advertising business. We now have over 1 billion paid subscriptions across our services.
+                    </div>
+                </div>
+                
+                <div class="transcript-segment" data-time="2:15">
+                    <div class="segment-header">
+                        <span class="speaker-name">Tim Cook (CEO)</span>
+                        <span class="segment-time" onclick="seekTo(135)">2:15</span>
+                    </div>
+                    <div class="segment-text">
+                        Looking ahead, we're incredibly excited about our roadmap. We continue to invest heavily in artificial intelligence and machine learning capabilities. Our new Apple Intelligence features are just the beginning of what we believe will be a transformative period for personal technology. We're also making significant progress in our automotive and healthcare initiatives.
+                    </div>
+                </div>
+                
+                <div class="transcript-segment" data-time="3:00">
+                    <div class="segment-header">
+                        <span class="speaker-name">Analyst - Morgan Stanley</span>
+                        <span class="segment-time" onclick="seekTo(180)">3:00</span>
+                    </div>
+                    <div class="segment-text">
+                        Thanks for taking my question. Can you provide more color on the geographic performance this quarter? We're particularly interested in China and how you're navigating the competitive landscape there.
+                    </div>
+                </div>
+                
+                <div class="transcript-segment" data-time="3:20">
+                    <div class="segment-header">
+                        <span class="speaker-name">Tim Cook (CEO)</span>
+                        <span class="segment-time" onclick="seekTo(200)">3:20</span>
+                    </div>
+                    <div class="segment-text">
+                        Great question. China remains a critical market for us, and I'm pleased to report that we saw sequential improvement this quarter. While we faced some headwinds earlier in the year, our iPhone 15 lineup has been well received by Chinese consumers. We're also seeing strong growth in our Services business in the region, particularly with the App Store and iCloud.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Panel - Controls -->
+        <div class="controls-panel">
+            <!-- Audio Player -->
+            <div class="audio-player">
+                <div class="player-header">
+                    <button class="play-button" id="playButton" onclick="togglePlay()">▶️</button>
+                    <div class="playback-info">
+                        <div class="current-time" id="currentTime">13:45</div>
+                        <div class="total-time">/ 58:42</div>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="progress-bar" onclick="seekToPosition(event)">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                
+                <div class="playback-controls">
+                    <select class="speed-control" onchange="changeSpeed(this.value)">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                    
+                    <div class="volume-control">
+                        <span>🔊</span>
+                        <div class="volume-slider"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="actions-title">Quick Actions</div>
+                <button class="action-btn" onclick="downloadTranscript()">
+                    📄 Download Transcript
+                </button>
+                <button class="action-btn" onclick="downloadAudio()">
+                    🎵 Download Audio
+                </button>
+                <button class="action-btn" onclick="shareTranscript()">
+                    📤 Share Transcript
+                </button>
+                <button class="action-btn" onclick="addToWatchlist()">
+                    ⭐ Add to Watchlist
+                </button>
+                <button class="action-btn" onclick="setAlert()">
+                    🔔 Set Alert
+                </button>
+            </div>
+            
+            <!-- AI Insights -->
+            <div class="insights-panel">
+                <div class="insights-title">🤖 AI Insights</div>
+                
+                <div class="insight-item">
+                    <div class="insight-category">Revenue Highlight</div>
+                    <div class="insight-text">
+                        Record Q4 revenue of $94.9B, up 8% YoY, driven by strong iPhone and Services performance.
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-category">Key Metric</div>
+                    <div class="insight-text">
+                        Services reached $22.3B (+16% YoY) with over 1B paid subscriptions milestone achieved.
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-category">Forward Looking</div>
+                    <div class="insight-text">
+                        Heavy investment in AI/ML capabilities with Apple Intelligence as foundation for future growth.
+                    </div>
+                </div>
+                
+                <div class="insight-item">
+                    <div class="insight-category">Geographic</div>
+                    <div class="insight-text">
+                        China showing sequential improvement with iPhone 15 strong reception and Services growth.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isPlaying = false;
+        let currentTime = 825; // 13:45 in seconds
+        let totalTime = 3522; // 58:42 in seconds
+        
+        // Search functionality
+        document.getElementById('transcriptSearch').addEventListener('input', function() {
+            const query = this.value.toLowerCase();
+            const segments = document.querySelectorAll('.transcript-segment');
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                // Clear highlights and results
+                segments.forEach(segment => {
+                    const text = segment.querySelector('.segment-text');
+                    text.innerHTML = text.textContent;
+                    segment.classList.remove('highlighted');
+                });
+                resultsDiv.textContent = '';
+                return;
+            }
+            
+            let matchCount = 0;
+            segments.forEach(segment => {
+                const textElement = segment.querySelector('.segment-text');
+                const originalText = textElement.textContent;
+                
+                if (originalText.toLowerCase().includes(query)) {
+                    matchCount++;
+                    // Highlight matches
+                    const highlightedText = originalText.replace(
+                        new RegExp(query, 'gi'),
+                        match => `<span class="highlight">${match}</span>`
+                    );
+                    textElement.innerHTML = highlightedText;
+                    segment.classList.add('highlighted');
+                } else {
+                    textElement.innerHTML = originalText;
+                    segment.classList.remove('highlighted');
+                }
+            });
+            
+            resultsDiv.textContent = matchCount > 0 ? `Found ${matchCount} matches` : 'No matches found';
+        });
+        
+        // Audio player controls
+        function togglePlay() {
+            const button = document.getElementById('playButton');
+            isPlaying = !isPlaying;
+            button.textContent = isPlaying ? '⏸️' : '▶️';
+            
+            if (isPlaying) {
+                // Simulate playback progress
+                updateProgress();
+            }
+        }
+        
+        function updateProgress() {
+            if (!isPlaying) return;
+            
+            currentTime += 1;
+            if (currentTime >= totalTime) {
+                currentTime = totalTime;
+                isPlaying = false;
+                document.getElementById('playButton').textContent = '▶️';
+                return;
+            }
+            
+            // Update UI
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+            const progressPercent = (currentTime / totalTime) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+            
+            // Continue updating
+            setTimeout(updateProgress, 1000);
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function seekTo(seconds) {
+            currentTime = seconds;
+            document.getElementById('currentTime').textContent = formatTime(currentTime);
+            const progressPercent = (currentTime / totalTime) * 100;
+            document.getElementById('progressFill').style.width = progressPercent + '%';
+            
+            // Scroll to corresponding transcript segment
+            const segment = document.querySelector(`[data-time="${Math.floor(seconds/60)}:${(seconds%60).toString().padStart(2, '0')}"]`);
+            if (segment) {
+                segment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function seekToPosition(event) {
+            const progressBar = event.currentTarget;
+            const rect = progressBar.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            const percentage = clickX / rect.width;
+            const newTime = Math.floor(totalTime * percentage);
+            seekTo(newTime);
+        }
+        
+        function changeSpeed(speed) {
+            alert(`🎵 Playback speed changed to ${speed}x\n\n(Audio speed control will be functional when connected to real audio)`);
+        }
+        
+        // Quick actions
+        function downloadTranscript() {
+            alert('📄 Downloading transcript...\n\nThis will generate a PDF with the full transcript, timestamps, and speaker identification.');
+        }
+        
+        function downloadAudio() {
+            alert('🎵 Downloading audio file...\n\nThis will download the full earnings call audio in MP3 format.');
+        }
+        
+        function shareTranscript() {
+            alert('📤 Share options:\n\n• Copy link to transcript\n• Email transcript\n• Export to PDF\n• Share specific segments');
+        }
+        
+        function addToWatchlist() {
+            alert('⭐ Apple Inc. added to your watchlist!\n\nYou\'ll receive notifications about:\n• New earnings calls\n• Important announcements\n• Analyst updates');
+        }
+        
+        function setAlert() {
+            alert('🔔 Alert options:\n\n• Keyword mentions in future calls\n• Revenue threshold alerts\n• Guidance changes\n• Management changes');
+        }
+        
+        console.log('📄 ATNT Transcript Viewer Loaded');
+        console.log('🎙️ Audio player controls active');
+        console.log('🔍 Search functionality enabled');
+        console.log('🤖 AI insights displayed');
+        console.log('📅 Day 4: Advanced Transcript Viewer Complete');
+    </script>
+</body>
+</html>

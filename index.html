@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATNT - Live Earnings Calls & Transcripts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #000000;
+        }
+        
+        /* Header - Dark Theme */
+        .header {
+            background: #111111;
+            border-bottom: 1px solid #333333;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: #ffffff;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn-secondary {
+            color: #9ca3af;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            transition: color 0.2s;
+        }
+        
+        .btn-secondary:hover {
+            color: #ffffff;
+        }
+        
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+        
+        /* Hero Section - Dark Theme */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+        }
+        
+        .hero .highlight {
+            color: #3b82f6;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #9ca3af;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1.5rem 1rem 3rem;
+            font-size: 1rem;
+            border: 2px solid #333333;
+            border-radius: 12px;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #111111;
+            color: #ffffff;
+        }
+        
+        .search-input:focus {
+            border-color: #3b82f6;
+        }
+        
+        .search-input::placeholder {
+            color: #6b7280;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 1.2rem;
+        }
+        
+        .cta-button {
+            background: #3b82f6;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .cta-button:hover {
+            background: #2563eb;
+        }
+        
+        /* Live Events Section - Dark Theme */
+        .live-section {
+            background: #0a0a0a;
+            padding: 4rem 0;
+        }
+        
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #9ca3af;
+        }
+        
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .event-card {
+            background: #111111;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid #333333;
+            transition: box-shadow 0.2s;
+        }
+        
+        .event-card:hover {
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+            border-color: #3b82f6;
+        }
+        
+        .event-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .live-badge {
+            background: #ef4444;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .upcoming-badge {
+            background: #374151;
+            color: #9ca3af;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .event-time {
+            font-size: 0.875rem;
+            color: #9ca3af;
+            margin-left: auto;
+        }
+        
+        .company-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+        
+        .company-symbol {
+            color: #9ca3af;
+            margin-bottom: 1rem;
+        }
+        
+        .join-button {
+            width: 100%;
+            background: #3b82f6;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .join-button:hover {
+            background: #2563eb;
+        }
+        
+        /* Features Section - Dark Theme */
+        .features-section {
+            padding: 4rem 0;
+            background: #000000;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: #111111;
+            border-radius: 12px;
+            border: 1px solid #333333;
+            transition: transform 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: #1e3a8a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: #3b82f6;
+        }
+        
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-description {
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+        
+        /* Footer - Dark Theme */
+        .footer {
+            background: #0a0a0a;
+            color: white;
+            padding: 3rem 0 2rem;
+            border-top: 1px solid #333333;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: #9ca3af;
+            text-decoration: none;
+            line-height: 2;
+            transition: color 0.2s;
+        }
+        
+        .footer-section a:hover {
+            color: #3b82f6;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #333333;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        /* Status Badge - Dark Theme */
+        .status-badge {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            z-index: 1000;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+        }
+</style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="#" class="logo">ATNT</a>
+            <nav class="nav-links">
+                <a href="#">Features</a>
+                <a href="#">Companies</a>
+                <a href="#">Live Events</a>
+                <a href="#">API</a>
+                <a href="#">Pricing</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="btn-secondary">Sign In</a>
+                <a href="#" class="btn-primary">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Be the first to know.<br><span class="highlight">Act with conviction.</span></h1>
+        <p class="hero-subtitle">Access live audio with real-time transcripts for all events from 13,000+ public companies. Earnings calls, capital markets days, M&A announcements, and more.</p>
+        
+        <div class="search-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" placeholder="Search companies, transcripts, or keywords..." id="searchInput">
+        </div>
+        
+        <button class="cta-button" onclick="startDemo()">Start Free Trial</button>
+    </section>
+
+    <!-- Live Events Section -->
+    <section class="live-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Live & Upcoming Events</h2>
+                <p class="section-subtitle">Join live earnings calls with real-time transcription</p>
+            </div>
+            
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-header">
+                        <span class="live-badge">🔴 Live</span>
+                        <span class="event-time">4:30 PM EST</span>
+                    </div>
+                    <h3 class="company-name">Apple Inc.</h3>
+                    <p class="company-symbol">AAPL</p>
+                    <button class="join-button" onclick="joinLive('AAPL')">Join Live Call</button>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-header">
+                        <span class="upcoming-badge">Upcoming</span>
+                        <span class="event-time">5:00 PM EST</span>
+                    </div>
+                    <h3 class="company-name">Microsoft Corporation</h3>
+                    <p class="company-symbol">MSFT</p>
+                    <button class="join-button" onclick="setReminder('MSFT')">Set Reminder</button>
+                </div>
+                
+                <div class="event-card">
+                    <div class="event-header">
+                        <span class="upcoming-badge">Upcoming</span>
+                        <span class="event-time">6:00 PM EST</span>
+                    </div>
+                    <h3 class="company-name">Tesla, Inc.</h3>
+                    <p class="company-symbol">TSLA</p>
+                    <button class="join-button" onclick="setReminder('TSLA')">Set Reminder</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-container">
+            <div class="section-header">
+                <h2 class="section-title">Numbers don't explain intent. Words do.</h2>
+                <p class="section-subtitle">The conviction in an executive's statement. The subtle shift in messaging. The tell-tale signs of a changing strategy.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3 class="feature-title">Live Audio & Transcripts</h3>
+                    <p class="feature-description">Access live earnings calls with real-time transcription. No registration required, just click and listen.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Powerful Search</h3>
+                    <p class="feature-description">Search across all transcripts simultaneously. Find the exact moment when strategies shift or guidance changes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">AI-Powered Insights</h3>
+                    <p class="feature-description">Get instant highlights, sentiment analysis, and key topic extraction from every earnings call.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>ATNT</h4>
+                <p style="color: #9ca3af; line-height: 1.6;">The leading platform for live earnings calls and financial research. Built for investors who need to act fast.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Live Calls</a></li>
+                    <li><a href="#">Transcripts</a></li>
+                    <li><a href="#">Search</a></li>
+                    <li><a href="#">API</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#">Privacy</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 ATNT. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Status Badge -->
+    <div class="status-badge">
+        🚀 Day 2: Professional Design Complete
+    </div>
+
+    <script>
+        function startDemo() {
+            alert('🎉 Welcome to ATNT!\n\n✅ Professional design complete\n📅 Day 2 of 14-day build\n\n🔜 Next: User authentication system');
+        }
+        
+        function joinLive(symbol) {
+            alert(`🔴 Joining live call for ${symbol}!\n\n🎙️ Live audio streaming\n📝 Real-time transcription\n📊 AI-powered insights\n\n(Coming in Days 8-10)`);
+        }
+        
+        function setReminder(symbol) {
+            alert(`⏰ Reminder set for ${symbol} earnings call!\n\n📧 Email notification enabled\n📱 Push notification enabled\n\n(Notification system coming in Days 5-7)`);
+        }
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value;
+                if (query) {
+                    alert(`🔍 Searching for: "${query}"\n\n📊 Scanning 13,000+ companies\n📝 Searching transcripts\n🤖 AI analysis in progress\n\n(Full search coming Day 5)`);
+                }
+            }
+        });
+        
+        console.log('🎉 ATNT Professional Platform loaded!');
+        console.log('📅 Day 2 Complete: Quartr-style design implemented');
+        console.log('🔜 Next: User authentication & database setup');
+    </script>
+</body>
+</html>
