@@ -17,6 +17,7 @@ app.use(express.static('.'));
 let users = [];
 let watchlists = [];
 let alerts = [];
+let userProfiles = [];
 let companies = [
     {
         symbol: 'AAPL',
@@ -121,7 +122,7 @@ app.get('/pages/:page', (req, res) => {
 // Auth Routes
 app.post('/api/auth/register', async (req, res) => {
     try {
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, company, role, investmentFocus } = req.body;
 
         // Check if user already exists
         const existingUser = users.find(u => u.email === email);
@@ -139,6 +140,9 @@ app.post('/api/auth/register', async (req, res) => {
             lastName,
             email,
             password: hashedPassword,
+            company: company || '',
+            role: role || '',
+            investmentFocus: investmentFocus || '',
             tier: 'free',
             createdAt: new Date(),
             stats: {
@@ -161,6 +165,9 @@ app.post('/api/auth/register', async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                company: user.company,
+                role: user.role,
+                investmentFocus: user.investmentFocus,
                 tier: user.tier,
                 stats: user.stats
             },
@@ -197,6 +204,9 @@ app.post('/api/auth/login', async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                company: user.company,
+                role: user.role,
+                investmentFocus: user.investmentFocus,
                 tier: user.tier,
                 stats: user.stats
             },
@@ -288,6 +298,73 @@ app.get('/api/events', (req, res) => {
     }
 
     res.json(filteredEvents);
+});
+
+// User Profile Routes
+app.get('/api/user/profile', authenticateToken, (req, res) => {
+    const profile = userProfiles.find(p => p.userId === req.user.id);
+    if (!profile) {
+        return res.status(404).json({ error: 'Profile not found' });
+    }
+    res.json(profile);
+});
+
+app.post('/api/user/profile', authenticateToken, (req, res) => {
+    try {
+        const { fullName, industry, role, jobFunction, purpose } = req.body;
+
+        // Validation
+        if (!fullName || !fullName.trim()) {
+            return res.status(400).json({ error: 'Full name is required' });
+        }
+
+        if (!purpose || !purpose.trim()) {
+            return res.status(400).json({ error: 'Purpose is required' });
+        }
+
+        if (fullName.length > 80) {
+            return res.status(400).json({ error: 'Full name must be 80 characters or less' });
+        }
+
+        if (purpose.length > 140) {
+            return res.status(400).json({ error: 'Purpose must be 140 characters or less' });
+        }
+
+        // Check if profile already exists
+        const existingProfileIndex = userProfiles.findIndex(p => p.userId === req.user.id);
+        
+        const profileData = {
+            userId: req.user.id,
+            fullName: fullName.trim(),
+            industry: industry || null,
+            role: role || null,
+            jobFunction: jobFunction || null,
+            purpose: purpose.trim(),
+            updatedAt: new Date()
+        };
+
+        if (existingProfileIndex >= 0) {
+            // Update existing profile
+            userProfiles[existingProfileIndex] = {
+                ...userProfiles[existingProfileIndex],
+                ...profileData
+            };
+            console.log(`Profile updated for user ${req.user.id}`);
+        } else {
+            // Create new profile
+            profileData.createdAt = new Date();
+            userProfiles.push(profileData);
+            console.log(`Profile created for user ${req.user.id}`);
+        }
+
+        res.json({
+            message: 'Profile saved successfully',
+            profile: profileData
+        });
+    } catch (error) {
+        console.error('Profile save error:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 
 // Search Routes

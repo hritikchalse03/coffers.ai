@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Info - Coffers.ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Design Tokens */
+            --color-white: #FFFFFF;
+            --color-black: #0A0A0A;
+            --color-muted: #4B5563;
+            --color-heading: #111827;
+            --color-divider: #E5E7EB;
+            --color-panel: #F3F4F6;
+            --color-hover: rgba(0, 0, 0, 0.05);
+            --color-error: #DC2626;
+            --color-success: #059669;
+            --color-focus: rgba(0, 0, 0, 0.1);
+            
+            /* Spacing Scale (8-point system) */
+            --space-1: 0.25rem;  /* 4px */
+            --space-2: 0.5rem;   /* 8px */
+            --space-3: 0.75rem;  /* 12px */
+            --space-4: 1rem;     /* 16px */
+            --space-5: 1.25rem;  /* 20px */
+            --space-6: 1.5rem;   /* 24px */
+            --space-8: 2rem;     /* 32px */
+            --space-10: 2.5rem;  /* 40px */
+            --space-12: 3rem;    /* 48px */
+            --space-16: 4rem;    /* 64px */
+            --space-20: 5rem;    /* 80px */
+            --space-24: 6rem;    /* 96px */
+            
+            /* Typography */
+            --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--color-heading);
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: var(--font-size-4xl); }
+        h2 { font-size: var(--font-size-3xl); }
+        h3 { font-size: var(--font-size-2xl); }
+        h4 { font-size: var(--font-size-xl); }
+        h5 { font-size: var(--font-size-lg); }
+        h6 { font-size: var(--font-size-base); }
+
+        p {
+            color: var(--color-muted);
+            line-height: 1.7;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-divider);
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--color-black);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .stepper {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            font-size: var(--font-size-sm);
+            color: var(--color-muted);
+        }
+
+        .stepper-current {
+            color: var(--color-black);
+            font-weight: 500;
+        }
+
+        .skip-link {
+            color: var(--color-muted);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .skip-link:hover {
+            color: var(--color-black);
+        }
+
+        /* Main Content */
+        .main-content {
+            min-height: calc(100vh - 72px);
+            padding: var(--space-8) 0;
+        }
+
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+
+        .profile-header h1 {
+            margin-bottom: var(--space-4);
+        }
+
+        .profile-header p {
+            font-size: var(--font-size-lg);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Form Sections */
+        .form-section {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            margin-bottom: var(--space-8);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            margin-bottom: var(--space-6);
+            color: var(--color-heading);
+        }
+
+        .section-description {
+            color: var(--color-muted);
+            margin-bottom: var(--space-6);
+            font-size: var(--font-size-sm);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-6);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--color-heading);
+            margin-bottom: var(--space-2);
+        }
+
+        .required {
+            color: var(--color-error);
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--color-white);
+            font-family: var(--font-family);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--color-black);
+            box-shadow: 0 0 0 3px var(--color-focus);
+        }
+
+        .form-input.error,
+        .form-textarea.error {
+            border-color: var(--color-error);
+        }
+
+        .form-input.error:focus,
+        .form-textarea.error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-error {
+            color: var(--color-error);
+            font-size: var(--font-size-xs);
+            margin-top: var(--space-1);
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-helper {
+            color: var(--color-muted);
+            font-size: var(--font-size-xs);
+            margin-top: var(--space-1);
+        }
+
+        /* Combobox Styles */
+        .combobox-container {
+            position: relative;
+        }
+
+        .combobox-input {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--color-white);
+            font-family: var(--font-family);
+        }
+
+        .combobox-input:focus {
+            outline: none;
+            border-color: var(--color-black);
+            box-shadow: 0 0 0 3px var(--color-focus);
+        }
+
+        .combobox-input.error {
+            border-color: var(--color-error);
+        }
+
+        .combobox-input.error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .combobox-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--color-white);
+            border: 1px solid var(--color-divider);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .combobox-dropdown.show {
+            display: block;
+        }
+
+        .combobox-option {
+            padding: var(--space-3) var(--space-4);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--color-divider);
+        }
+
+        .combobox-option:last-child {
+            border-bottom: none;
+        }
+
+        .combobox-option:hover,
+        .combobox-option.highlighted {
+            background-color: var(--color-hover);
+        }
+
+        .combobox-option.selected {
+            background-color: var(--color-panel);
+            font-weight: 500;
+        }
+
+        .combobox-clear {
+            position: absolute;
+            right: var(--space-3);
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--color-muted);
+            cursor: pointer;
+            font-size: var(--font-size-lg);
+            line-height: 1;
+            padding: var(--space-1);
+        }
+
+        .combobox-clear:hover {
+            color: var(--color-black);
+        }
+
+        /* Multi-select Styles */
+        .multiselect-container {
+            position: relative;
+        }
+
+        .multiselect-input {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--color-white);
+            font-family: var(--font-family);
+            min-height: 44px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .multiselect-input:focus {
+            outline: none;
+            border-color: var(--color-black);
+            box-shadow: 0 0 0 3px var(--color-focus);
+        }
+
+        .multiselect-input.error {
+            border-color: var(--color-error);
+        }
+
+        .multiselect-input.error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .multiselect-pill {
+            background-color: var(--color-panel);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-sm);
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+        }
+
+        .multiselect-pill-remove {
+            background: none;
+            border: none;
+            color: var(--color-muted);
+            cursor: pointer;
+            font-size: var(--font-size-sm);
+            line-height: 1;
+            padding: 0;
+        }
+
+        .multiselect-pill-remove:hover {
+            color: var(--color-black);
+        }
+
+        .multiselect-placeholder {
+            color: var(--color-muted);
+            font-size: var(--font-size-base);
+        }
+
+        .multiselect-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--color-white);
+            border: 1px solid var(--color-divider);
+            border-top: none;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            box-shadow: var(--shadow-md);
+            z-index: 50;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .multiselect-dropdown.show {
+            display: block;
+        }
+
+        .multiselect-option {
+            padding: var(--space-3) var(--space-4);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid var(--color-divider);
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .multiselect-option:last-child {
+            border-bottom: none;
+        }
+
+        .multiselect-option:hover,
+        .multiselect-option.highlighted {
+            background-color: var(--color-hover);
+        }
+
+        .multiselect-option.selected {
+            background-color: var(--color-panel);
+            font-weight: 500;
+        }
+
+        .multiselect-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--color-black);
+        }
+
+        .multiselect-highlight {
+            background-color: var(--color-panel);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-sm);
+            padding: var(--space-1) var(--space-2);
+            font-size: var(--font-size-xs);
+            font-weight: 500;
+            color: var(--color-heading);
+        }
+
+        /* Other Input */
+        .other-input {
+            margin-top: var(--space-3);
+            display: none;
+        }
+
+        .other-input.show {
+            display: block;
+        }
+
+        /* Footer */
+        .footer {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--color-white);
+            border-top: 1px solid var(--color-divider);
+            padding: var(--space-4) 0;
+            z-index: 100;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress {
+            font-size: var(--font-size-sm);
+            color: var(--color-muted);
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: var(--space-4);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-primary {
+            background-color: var(--color-black);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--color-heading);
+        }
+
+        .btn-primary:disabled {
+            background-color: var(--color-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-muted);
+            border: 1px solid var(--color-divider);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-hover);
+            color: var(--color-black);
+        }
+
+        .btn-large {
+            padding: var(--space-4) var(--space-8);
+            font-size: var(--font-size-base);
+        }
+
+        /* Loading State */
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top-color: var(--color-white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-4);
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-4);
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: stretch;
+            }
+            
+            .footer-actions {
+                justify-content: space-between;
+            }
+            
+            .stepper {
+                display: none;
+            }
+        }
+
+        /* Focus States for Accessibility */
+        .btn:focus,
+        .form-input:focus,
+        .form-textarea:focus,
+        .combobox-input:focus,
+        .multiselect-input:focus,
+        .skip-link:focus {
+            outline: 2px solid var(--color-black);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="../index.html" class="logo">coffers.ai</a>
+            <div class="stepper">
+                <span>Login</span>
+                <span>▸</span>
+                <span class="stepper-current">Profile Info</span>
+                <span>▸</span>
+                <span>Dashboard</span>
+            </div>
+            <a href="#" class="skip-link" onclick="skipProfile()">Skip for now</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <h1>Complete your profile</h1>
+                <p>Help us personalize your Coffers.ai experience with finance-specific insights and recommendations</p>
+            </div>
+
+            <form id="profileForm" class="profile-form">
+                <!-- Who you are -->
+                <section class="form-section">
+                    <h2 class="section-title">Who you are</h2>
+                    <p class="section-description">Tell us about yourself and your role in finance</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="fullName" class="form-label">
+                                Full Name <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName" 
+                                class="form-input" 
+                                placeholder="John Doe"
+                                maxlength="80"
+                                required
+                            >
+                            <div class="form-error" id="fullNameError">Full name is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role" class="form-label">Role</label>
+                            <div class="combobox-container">
+                                <input 
+                                    type="text" 
+                                    id="role" 
+                                    name="role" 
+                                    class="combobox-input" 
+                                    placeholder="Select your role"
+                                    autocomplete="off"
+                                >
+                                <button type="button" class="combobox-clear" onclick="clearCombobox('role')" style="display: none;">×</button>
+                                <div class="combobox-dropdown" id="roleDropdown">
+                                    <!-- Options will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="other-input" id="roleOtherInput">
+                                <input 
+                                    type="text" 
+                                    id="roleOther" 
+                                    name="roleOther" 
+                                    class="form-input" 
+                                    placeholder="Please specify your role"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="industry" class="form-label">Industry</label>
+                            <div class="combobox-container">
+                                <input 
+                                    type="text" 
+                                    id="industry" 
+                                    name="industry" 
+                                    class="combobox-input" 
+                                    placeholder="Select your industry"
+                                    autocomplete="off"
+                                >
+                                <button type="button" class="combobox-clear" onclick="clearCombobox('industry')" style="display: none;">×</button>
+                                <div class="combobox-dropdown" id="industryDropdown">
+                                    <!-- Options will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="other-input" id="industryOtherInput">
+                                <input 
+                                    type="text" 
+                                    id="industryOther" 
+                                    name="industryOther" 
+                                    class="form-input" 
+                                    placeholder="Please specify your industry"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- What you do -->
+                <section class="form-section">
+                    <h2 class="section-title">What you do</h2>
+                    <p class="section-description">Select up to 3 job functions that best describe your work</p>
+                    
+                    <div class="form-group">
+                        <label for="jobFunction" class="form-label">Job Function</label>
+                        <div class="multiselect-container">
+                            <div class="multiselect-input" id="jobFunctionInput" onclick="toggleMultiselect('jobFunction')">
+                                <span class="multiselect-placeholder">Select your job functions</span>
+                            </div>
+                            <div class="multiselect-dropdown" id="jobFunctionDropdown">
+                                <!-- Options will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="form-helper">Select up to 3 functions. The first two are highlighted as most common.</div>
+                        <div class="other-input" id="jobFunctionOtherInput">
+                            <input 
+                                type="text" 
+                                id="jobFunctionOther" 
+                                name="jobFunctionOther" 
+                                class="form-input" 
+                                placeholder="Please specify your job function"
+                            >
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Why you're here -->
+                <section class="form-section">
+                    <h2 class="section-title">Why you're here</h2>
+                    <p class="section-description">Help us understand your goals and expectations</p>
+                    
+                    <div class="form-group">
+                        <label for="purpose" class="form-label">
+                            Purpose / Expectation <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            id="purpose" 
+                            name="purpose" 
+                            class="form-textarea" 
+                            placeholder="Analyze transcripts faster; track earnings events; summarize calls."
+                            maxlength="140"
+                            required
+                        ></textarea>
+                        <div class="form-helper">Tell us what you hope to achieve with Coffers.ai (140 characters max)</div>
+                        <div class="form-error" id="purposeError">Purpose is required</div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="progress">Step 2 of 3</div>
+            <div class="footer-actions">
+                <button type="button" class="btn btn-secondary" onclick="goBack()">Back</button>
+                <button type="submit" class="btn btn-primary btn-large" id="saveBtn" onclick="saveProfile()" disabled>
+                    Save & Continue
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Finance-specific data
+        const financeData = {
+            industries: [
+                'Investment Banking (M&A, ECM, DCM)',
+                'Equity Research (Sell-Side)',
+                'Buy-Side: Asset Management / Mutual Funds',
+                'Hedge Funds',
+                'Private Equity',
+                'Venture Capital',
+                'Wealth / Private Banking',
+                'Retail Brokerage',
+                'Commercial Banking',
+                'Corporate Finance / Treasury (Issuer)',
+                'Investor Relations (Issuer)',
+                'Sales & Trading (Sell-Side)',
+                'Proprietary / HFT Trading',
+                'Quantitative Finance / Market Making',
+                'Risk Management',
+                'Compliance / Regulatory (AML/KYC)',
+                'Credit Ratings / Research',
+                'Insurance / Actuarial',
+                'Real Estate Finance / REITs',
+                'Project / Infrastructure Finance',
+                'Sovereign Wealth / Family Office',
+                'Market Data / Research Providers',
+                'Exchanges / ATS / ECN',
+                'Audit / Advisory / Valuations',
+                'FinTech / Payments / Data Platforms',
+                'Other'
+            ],
+            roles: [
+                'Analyst (Investment Banking)',
+                'Associate (Investment Banking)',
+                'Equity Research Analyst',
+                'Credit Research Analyst',
+                'Portfolio Manager',
+                'Investment Analyst (Buy-Side)',
+                'Trader / Execution Trader',
+                'Quant Researcher',
+                'Quant Developer / Financial Engineer',
+                'Risk Analyst / Risk Manager',
+                'Compliance Officer / AML/KYC Analyst',
+                'Corporate Finance / Treasury Analyst',
+                'Corporate Development / M&A',
+                'Investor Relations Manager',
+                'Product Manager (FinTech / Data)',
+                'Data Scientist (Finance)',
+                'Derivatives Structurer',
+                'Credit Analyst / Underwriter',
+                'PE / VC Investment Associate',
+                'Fund Accountant / Performance',
+                'Strategy / BI Analyst',
+                'Financial Advisor / Wealth Manager',
+                'Operations (Middle / Back Office)',
+                'Other'
+            ],
+            jobFunctions: [
+                { value: 'Research & Analysis', highlighted: true },
+                { value: 'Investment / Trading Execution', highlighted: true },
+                { value: 'Valuation & Modeling' },
+                { value: 'Diligence & Deal Execution' },
+                { value: 'Portfolio Construction & PM' },
+                { value: 'Risk & Limits Management' },
+                { value: 'Compliance / Surveillance' },
+                { value: 'Market & Macro Monitoring' },
+                { value: 'Fundamentals / Earnings Review' },
+                { value: 'Client Reporting & Performance' },
+                { value: 'Data Engineering / Pipelines' },
+                { value: 'Quant Research / Backtesting' },
+                { value: 'Product / Platform Management' },
+                { value: 'Pricing & Liquidity' },
+                { value: 'Treasury / Cash Management' },
+                { value: 'IR Communications' },
+                { value: 'Strategy / Competitive Intel' },
+                { value: 'Other' }
+            ]
+        };
+
+        // Global state
+        let selectedJobFunctions = [];
+        let currentCombobox = null;
+        let currentMultiselect = null;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeComboboxes();
+            initializeMultiselect();
+            setupFormValidation();
+            checkAuth();
+        });
+
+        // Check authentication
+        function checkAuth() {
+            const auth = localStorage.getItem('auth');
+            if (auth !== '1') {
+                window.location.href = 'login.html';
+                return;
+            }
+        }
+
+        // Initialize comboboxes
+        function initializeComboboxes() {
+            // Industry combobox
+            setupCombobox('industry', financeData.industries);
+            
+            // Role combobox
+            setupCombobox('role', financeData.roles);
+        }
+
+        // Setup individual combobox
+        function setupCombobox(fieldId, options) {
+            const input = document.getElementById(fieldId);
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            const clearBtn = input.nextElementSibling;
+            const otherInput = document.getElementById(fieldId + 'OtherInput');
+
+            // Populate dropdown
+            options.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'combobox-option';
+                optionEl.textContent = option;
+                optionEl.dataset.value = option;
+                optionEl.addEventListener('click', () => selectOption(fieldId, option));
+                dropdown.appendChild(optionEl);
+            });
+
+            // Input event handlers
+            input.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                filterOptions(fieldId, query);
+                showDropdown(fieldId);
+                updateClearButton(fieldId);
+            });
+
+            input.addEventListener('focus', () => {
+                showDropdown(fieldId);
+                currentCombobox = fieldId;
+            });
+
+            input.addEventListener('blur', () => {
+                setTimeout(() => hideDropdown(fieldId), 200);
+            });
+
+            input.addEventListener('keydown', (e) => handleComboboxKeydown(fieldId, e));
+        }
+
+        // Initialize multiselect
+        function initializeMultiselect() {
+            setupMultiselect('jobFunction', financeData.jobFunctions);
+        }
+
+        // Setup multiselect
+        function setupMultiselect(fieldId, options) {
+            const input = document.getElementById(fieldId + 'Input');
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            const otherInput = document.getElementById(fieldId + 'OtherInput');
+
+            // Populate dropdown
+            options.forEach(option => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'multiselect-option';
+                optionEl.innerHTML = `
+                    <input type="checkbox" class="multiselect-checkbox" id="${fieldId}_${option.value.replace(/\s+/g, '_')}">
+                    <label for="${fieldId}_${option.value.replace(/\s+/g, '_')}">${option.value}</label>
+                    ${option.highlighted ? '<span class="multiselect-highlight">Popular</span>' : ''}
+                `;
+                optionEl.dataset.value = option.value;
+                optionEl.addEventListener('click', (e) => {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = optionEl.querySelector('.multiselect-checkbox');
+                        checkbox.checked = !checkbox.checked;
+                        toggleJobFunction(option.value, checkbox.checked);
+                    }
+                });
+                dropdown.appendChild(optionEl);
+            });
+
+            // Input click handler
+            input.addEventListener('click', () => {
+                toggleMultiselect(fieldId);
+                currentMultiselect = fieldId;
+            });
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                    hideMultiselect(fieldId);
+                }
+            });
+        }
+
+        // Combobox functions
+        function selectOption(fieldId, value) {
+            const input = document.getElementById(fieldId);
+            input.value = value;
+            hideDropdown(fieldId);
+            updateClearButton(fieldId);
+            
+            // Show other input if "Other" is selected
+            if (value === 'Other') {
+                showOtherInput(fieldId);
+            } else {
+                hideOtherInput(fieldId);
+            }
+            
+            validateForm();
+        }
+
+        function filterOptions(fieldId, query) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            const options = dropdown.querySelectorAll('.combobox-option');
+            
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    option.style.display = 'block';
+                } else {
+                    option.style.display = 'none';
+                }
+            });
+        }
+
+        function showDropdown(fieldId) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            dropdown.classList.add('show');
+        }
+
+        function hideDropdown(fieldId) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            dropdown.classList.remove('show');
+        }
+
+        function clearCombobox(fieldId) {
+            const input = document.getElementById(fieldId);
+            input.value = '';
+            hideOtherInput(fieldId);
+            updateClearButton(fieldId);
+            validateForm();
+        }
+
+        function updateClearButton(fieldId) {
+            const input = document.getElementById(fieldId);
+            const clearBtn = input.nextElementSibling;
+            clearBtn.style.display = input.value ? 'block' : 'none';
+        }
+
+        function handleComboboxKeydown(fieldId, e) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            const options = dropdown.querySelectorAll('.combobox-option:not([style*="display: none"])');
+            const highlighted = dropdown.querySelector('.combobox-option.highlighted');
+            
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (highlighted) {
+                    highlighted.classList.remove('highlighted');
+                    const next = highlighted.nextElementSibling;
+                    if (next && next.style.display !== 'none') {
+                        next.classList.add('highlighted');
+                    }
+                } else if (options.length > 0) {
+                    options[0].classList.add('highlighted');
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (highlighted) {
+                    highlighted.classList.remove('highlighted');
+                    const prev = highlighted.previousElementSibling;
+                    if (prev && prev.style.display !== 'none') {
+                        prev.classList.add('highlighted');
+                    }
+                }
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (highlighted) {
+                    selectOption(fieldId, highlighted.dataset.value);
+                }
+            } else if (e.key === 'Escape') {
+                hideDropdown(fieldId);
+            }
+        }
+
+        // Multiselect functions
+        function toggleMultiselect(fieldId) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            if (dropdown.classList.contains('show')) {
+                hideMultiselect(fieldId);
+            } else {
+                showMultiselect(fieldId);
+            }
+        }
+
+        function showMultiselect(fieldId) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            dropdown.classList.add('show');
+        }
+
+        function hideMultiselect(fieldId) {
+            const dropdown = document.getElementById(fieldId + 'Dropdown');
+            dropdown.classList.remove('show');
+        }
+
+        function toggleJobFunction(value, checked) {
+            if (checked) {
+                if (selectedJobFunctions.length < 3) {
+                    selectedJobFunctions.push(value);
+                } else {
+                    // Remove oldest selection
+                    selectedJobFunctions.shift();
+                    selectedJobFunctions.push(value);
+                }
+            } else {
+                selectedJobFunctions = selectedJobFunctions.filter(fn => fn !== value);
+            }
+            
+            updateJobFunctionDisplay();
+            validateForm();
+        }
+
+        function updateJobFunctionDisplay() {
+            const input = document.getElementById('jobFunctionInput');
+            const placeholder = input.querySelector('.multiselect-placeholder');
+            
+            if (selectedJobFunctions.length === 0) {
+                placeholder.style.display = 'block';
+                input.innerHTML = '<span class="multiselect-placeholder">Select your job functions</span>';
+            } else {
+                placeholder.style.display = 'none';
+                input.innerHTML = selectedJobFunctions.map(fn => 
+                    `<div class="multiselect-pill">
+                        ${fn}
+                        <button type="button" class="multiselect-pill-remove" onclick="removeJobFunction('${fn}')">×</button>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function removeJobFunction(value) {
+            selectedJobFunctions = selectedJobFunctions.filter(fn => fn !== value);
+            updateJobFunctionDisplay();
+            
+            // Uncheck the checkbox
+            const checkbox = document.getElementById(`jobFunction_${value.replace(/\s+/g, '_')}`);
+            if (checkbox) {
+                checkbox.checked = false;
+            }
+            
+            validateForm();
+        }
+
+        // Other input functions
+        function showOtherInput(fieldId) {
+            const otherInput = document.getElementById(fieldId + 'OtherInput');
+            otherInput.classList.add('show');
+        }
+
+        function hideOtherInput(fieldId) {
+            const otherInput = document.getElementById(fieldId + 'OtherInput');
+            otherInput.classList.remove('show');
+        }
+
+        // Form validation
+        function setupFormValidation() {
+            const fullName = document.getElementById('fullName');
+            const purpose = document.getElementById('purpose');
+            
+            fullName.addEventListener('input', () => {
+                clearFieldError('fullName');
+                validateForm();
+            });
+            
+            purpose.addEventListener('input', () => {
+                clearFieldError('purpose');
+                validateForm();
+            });
+        }
+
+        function validateForm() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const purpose = document.getElementById('purpose').value.trim();
+            
+            const isValid = fullName.length > 0 && purpose.length > 0;
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.disabled = !isValid;
+            
+            return isValid;
+        }
+
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            field.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            field.classList.remove('error');
+            errorDiv.classList.remove('show');
+        }
+
+        // Form submission
+        function saveProfile() {
+            const formData = {
+                fullName: document.getElementById('fullName').value.trim(),
+                role: document.getElementById('role').value,
+                roleOther: document.getElementById('roleOther').value.trim(),
+                industry: document.getElementById('industry').value,
+                industryOther: document.getElementById('industryOther').value.trim(),
+                jobFunction: selectedJobFunctions,
+                jobFunctionOther: document.getElementById('jobFunctionOther').value.trim(),
+                purpose: document.getElementById('purpose').value.trim()
+            };
+
+            // Clear previous errors
+            ['fullName', 'purpose'].forEach(clearFieldError);
+
+            // Validate required fields
+            let isValid = true;
+
+            if (!formData.fullName) {
+                showFieldError('fullName', 'Full name is required');
+                isValid = false;
+            }
+
+            if (!formData.purpose) {
+                showFieldError('purpose', 'Purpose is required');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Show loading state
+            const saveBtn = document.getElementById('saveBtn');
+            saveBtn.classList.add('loading');
+            saveBtn.disabled = true;
+
+            try {
+                // Fire analytics event
+                fireAnalyticsEvent('profile_saved', {
+                    industry: formData.industry,
+                    role: formData.role,
+                    jobFunction: formData.jobFunction,
+                    hasOtherIndustry: !!formData.industryOther,
+                    hasOtherRole: !!formData.roleOther,
+                    hasOtherJobFunction: !!formData.jobFunctionOther
+                });
+
+                // Store profile data locally
+                localStorage.setItem('coffers_profile', JSON.stringify(formData));
+                localStorage.setItem('profilePending', 'false');
+
+                // Simulate API call
+                setTimeout(() => {
+                    // Redirect to dashboard
+                    window.location.href = 'dashboard.html';
+                }, 1000);
+            } catch (error) {
+                console.error('Profile save error:', error);
+                saveBtn.classList.remove('loading');
+                saveBtn.disabled = false;
+            }
+        }
+
+        function skipProfile() {
+            // Fire analytics event
+            fireAnalyticsEvent('profile_skipped', {});
+            
+            // Set profile pending flag
+            localStorage.setItem('profilePending', 'true');
+            
+            // Redirect to dashboard
+            window.location.href = 'dashboard.html';
+        }
+
+        function goBack() {
+            window.location.href = 'login.html';
+        }
+
+        // Analytics function
+        function fireAnalyticsEvent(eventName, data) {
+            // In a real implementation, this would send to your analytics service
+            console.log('Analytics Event:', eventName, data);
+            
+            // Example: Send to Google Analytics, Mixpanel, etc.
+            if (typeof gtag !== 'undefined') {
+                gtag('event', eventName, data);
+            }
+        }
+    </script>
+</body>
+</html>

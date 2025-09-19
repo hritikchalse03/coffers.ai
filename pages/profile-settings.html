@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Coffers.ai</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Design Tokens */
+            --color-white: #FFFFFF;
+            --color-black: #0A0A0A;
+            --color-muted: #4B5563;
+            --color-heading: #111827;
+            --color-divider: #E5E7EB;
+            --color-panel: #F3F4F6;
+            --color-hover: rgba(0, 0, 0, 0.05);
+            --color-error: #DC2626;
+            --color-success: #059669;
+            
+            /* Spacing Scale (8-point system) */
+            --space-1: 0.25rem;  /* 4px */
+            --space-2: 0.5rem;   /* 8px */
+            --space-3: 0.75rem;  /* 12px */
+            --space-4: 1rem;     /* 16px */
+            --space-5: 1.25rem;  /* 20px */
+            --space-6: 1.5rem;   /* 24px */
+            --space-8: 2rem;     /* 32px */
+            --space-10: 2.5rem;  /* 40px */
+            --space-12: 3rem;    /* 48px */
+            --space-16: 4rem;    /* 64px */
+            --space-20: 5rem;    /* 80px */
+            --space-24: 6rem;    /* 96px */
+            
+            /* Typography */
+            --font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+            
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--color-black);
+            background-color: var(--color-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: var(--color-heading);
+            letter-spacing: -0.025em;
+            line-height: 1.2;
+        }
+
+        h1 { font-size: var(--font-size-5xl); }
+        h2 { font-size: var(--font-size-4xl); }
+        h3 { font-size: var(--font-size-3xl); }
+        h4 { font-size: var(--font-size-2xl); }
+        h5 { font-size: var(--font-size-xl); }
+        h6 { font-size: var(--font-size-lg); }
+
+        p {
+            color: var(--color-muted);
+            line-height: 1.7;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        .container-sm {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 var(--space-6);
+        }
+
+        /* Header */
+        .header {
+            position: sticky;
+            top: 0;
+            background-color: var(--color-white);
+            border-bottom: 1px solid var(--color-divider);
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+
+        .logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--color-black);
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+            font-size: var(--font-size-sm);
+        }
+
+        .btn-primary {
+            background-color: var(--color-black);
+            color: var(--color-white);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: var(--color-heading);
+        }
+
+        .btn-primary:disabled {
+            background-color: var(--color-muted);
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-muted);
+            border: 1px solid var(--color-divider);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--color-hover);
+            color: var(--color-black);
+        }
+
+        /* Profile Settings Section */
+        .profile-section {
+            padding: var(--space-8) 0;
+        }
+
+        .profile-card {
+            background-color: var(--color-white);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-sm);
+            width: 100%;
+        }
+
+        .profile-header {
+            margin-bottom: var(--space-8);
+        }
+
+        .profile-header h1 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--space-2);
+        }
+
+        .profile-header p {
+            font-size: var(--font-size-sm);
+        }
+
+        /* Form Styles */
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-label {
+            display: block;
+            font-size: var(--font-size-sm);
+            font-weight: 500;
+            color: var(--color-heading);
+            margin-bottom: var(--space-2);
+        }
+
+        .required {
+            color: var(--color-error);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: var(--space-3) var(--space-4);
+            border: 1px solid var(--color-divider);
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-base);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            background-color: var(--color-white);
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--color-black);
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-input.error,
+        .form-select.error {
+            border-color: var(--color-error);
+        }
+
+        .form-input.error:focus,
+        .form-select.error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .form-error {
+            color: var(--color-error);
+            font-size: var(--font-size-xs);
+            margin-top: var(--space-1);
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-4);
+            margin-top: var(--space-6);
+            padding-top: var(--space-6);
+            border-top: 1px solid var(--color-divider);
+        }
+
+        /* Loading State */
+        .btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            top: 50%;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            border: 2px solid transparent;
+            border-top-color: var(--color-white);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-4);
+            font-size: var(--font-size-sm);
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background-color: #F0FDF4;
+            color: var(--color-success);
+            border: 1px solid #BBF7D0;
+        }
+
+        .message.error {
+            background-color: #FEF2F2;
+            color: var(--color-error);
+            border: 1px solid #FECACA;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: var(--space-6);
+            right: var(--space-6);
+            background-color: var(--color-black);
+            color: var(--color-white);
+            padding: var(--space-4) var(--space-6);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 var(--space-4);
+            }
+            
+            .profile-card {
+                padding: var(--space-6);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+
+        /* Focus States for Accessibility */
+        .btn:focus,
+        .form-input:focus,
+        .form-select:focus {
+            outline: 2px solid var(--color-black);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <a href="../index.html" class="logo">●●● Coffers.ai</a>
+            <div class="nav-actions">
+                <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Profile Settings Section -->
+    <section class="profile-section">
+        <div class="container-sm">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <h1>Profile Settings</h1>
+                    <p>Manage your personal information and preferences</p>
+                </div>
+
+                <!-- Success/Error Messages -->
+                <div id="message" class="message"></div>
+
+                <form id="profileForm" class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fullName" class="form-label">
+                                Full Name <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="fullName" 
+                                name="fullName" 
+                                class="form-input" 
+                                placeholder="John Doe"
+                                maxlength="80"
+                                required
+                            >
+                            <div class="form-error" id="fullNameError">Full name is required</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="industry" class="form-label">Industry</label>
+                            <select id="industry" name="industry" class="form-select">
+                                <option value="">Select industry</option>
+                                <option value="Investment Banking">Investment Banking</option>
+                                <option value="Hedge Funds">Hedge Funds</option>
+                                <option value="Private Equity">Private Equity</option>
+                                <option value="Venture Capital">Venture Capital</option>
+                                <option value="Asset Management">Asset Management</option>
+                                <option value="Wealth Management">Wealth Management</option>
+                                <option value="Commercial Banking">Commercial Banking</option>
+                                <option value="Insurance">Insurance</option>
+                                <option value="Fintech">Fintech</option>
+                                <option value="Real Estate Finance">Real Estate Finance</option>
+                                <option value="Trading & Sales">Trading & Sales</option>
+                                <option value="Research & Analysis">Research & Analysis</option>
+                                <option value="Corporate Finance">Corporate Finance</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Healthcare">Healthcare</option>
+                                <option value="Consumer">Consumer</option>
+                                <option value="Industrials">Industrials</option>
+                                <option value="Energy">Energy</option>
+                                <option value="Education">Education</option>
+                                <option value="Government">Government</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="role" class="form-label">Role</label>
+                            <select id="role" name="role" class="form-select">
+                                <option value="">Select role</option>
+                                <option value="Investment Banking Analyst">Investment Banking Analyst</option>
+                                <option value="Associate">Associate</option>
+                                <option value="Vice President">Vice President</option>
+                                <option value="Director">Director</option>
+                                <option value="Managing Director">Managing Director</option>
+                                <option value="Hedge Fund Manager">Hedge Fund Manager</option>
+                                <option value="Portfolio Manager">Portfolio Manager</option>
+                                <option value="Research Analyst">Research Analyst</option>
+                                <option value="Equity Research Analyst">Equity Research Analyst</option>
+                                <option value="Credit Analyst">Credit Analyst</option>
+                                <option value="Quantitative Analyst">Quantitative Analyst</option>
+                                <option value="Risk Manager">Risk Manager</option>
+                                <option value="Compliance Officer">Compliance Officer</option>
+                                <option value="Trading Desk">Trading Desk</option>
+                                <option value="Sales Trader">Sales Trader</option>
+                                <option value="Private Equity Associate">Private Equity Associate</option>
+                                <option value="Venture Capital Associate">Venture Capital Associate</option>
+                                <option value="Investment Advisor">Investment Advisor</option>
+                                <option value="Financial Advisor">Financial Advisor</option>
+                                <option value="Wealth Manager">Wealth Manager</option>
+                                <option value="CFO">CFO</option>
+                                <option value="Treasurer">Treasurer</option>
+                                <option value="Controller">Controller</option>
+                                <option value="Student">Student</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jobFunction" class="form-label">Job Function</label>
+                            <select id="jobFunction" name="jobFunction" class="form-select">
+                                <option value="">Select function</option>
+                                <option value="Equity Research">Equity Research</option>
+                                <option value="Credit Research">Credit Research</option>
+                                <option value="Macro Research">Macro Research</option>
+                                <option value="Investment Strategy">Investment Strategy</option>
+                                <option value="Portfolio Management">Portfolio Management</option>
+                                <option value="Risk Management">Risk Management</option>
+                                <option value="Trading">Trading</option>
+                                <option value="Sales">Sales</option>
+                                <option value="Investment Banking">Investment Banking</option>
+                                <option value="M&A Advisory">M&A Advisory</option>
+                                <option value="Capital Markets">Capital Markets</option>
+                                <option value="Private Equity">Private Equity</option>
+                                <option value="Venture Capital">Venture Capital</option>
+                                <option value="Asset Management">Asset Management</option>
+                                <option value="Wealth Management">Wealth Management</option>
+                                <option value="Quantitative Analysis">Quantitative Analysis</option>
+                                <option value="Data Science">Data Science</option>
+                                <option value="Compliance">Compliance</option>
+                                <option value="Operations">Operations</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Product Management">Product Management</option>
+                                <option value="Marketing">Marketing</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="purpose" class="form-label">
+                            Purpose / Expectation <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            id="purpose" 
+                            name="purpose" 
+                            class="form-input" 
+                            placeholder="Analyze transcripts faster; track earnings events"
+                            maxlength="140"
+                            required
+                        >
+                        <div class="form-error" id="purposeError">Purpose is required</div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Form validation and submission
+        const profileForm = document.getElementById('profileForm');
+        const messageDiv = document.getElementById('message');
+        const toastDiv = document.getElementById('toast');
+
+        // Show message function
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${type} show`;
+            setTimeout(() => {
+                messageDiv.className = 'message';
+            }, 5000);
+        }
+
+        // Show toast function
+        function showToast(text) {
+            toastDiv.textContent = text;
+            toastDiv.classList.add('show');
+            setTimeout(() => {
+                toastDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show field error
+        function showFieldError(fieldId, message) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            field.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        // Clear field error
+        function clearFieldError(fieldId) {
+            const field = document.getElementById(fieldId);
+            const errorDiv = document.getElementById(fieldId + 'Error');
+            field.classList.remove('error');
+            errorDiv.classList.remove('show');
+        }
+
+        // Load existing profile data
+        async function loadProfile() {
+            try {
+                const token = localStorage.getItem('coffers_token') || sessionStorage.getItem('coffers_token');
+                const response = await fetch('/api/user/profile', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const profile = await response.json();
+                    
+                    // Populate form fields
+                    document.getElementById('fullName').value = profile.fullName || '';
+                    document.getElementById('industry').value = profile.industry || '';
+                    document.getElementById('role').value = profile.role || '';
+                    document.getElementById('jobFunction').value = profile.jobFunction || '';
+                    document.getElementById('purpose').value = profile.purpose || '';
+                } else if (response.status === 404) {
+                    // No profile exists, redirect to profile setup
+                    window.location.href = 'profile-setup.html';
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+                showMessage('Failed to load profile. Please try again.', 'error');
+            }
+        }
+
+        // Form submission
+        profileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                fullName: document.getElementById('fullName').value.trim(),
+                industry: document.getElementById('industry').value,
+                role: document.getElementById('role').value,
+                jobFunction: document.getElementById('jobFunction').value,
+                purpose: document.getElementById('purpose').value.trim()
+            };
+
+            // Clear previous errors
+            ['fullName', 'purpose'].forEach(clearFieldError);
+
+            // Validate required fields
+            let isValid = true;
+
+            if (!formData.fullName) {
+                showFieldError('fullName', 'Full name is required');
+                isValid = false;
+            }
+
+            if (!formData.purpose) {
+                showFieldError('purpose', 'Purpose is required');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Show loading state
+            const submitBtn = document.querySelector('.btn-primary');
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            try {
+                const token = localStorage.getItem('coffers_token') || sessionStorage.getItem('coffers_token');
+                
+                if (!token) {
+                    throw new Error('Authentication required');
+                }
+
+                // Make API call to profile endpoint
+                const response = await fetch('/api/user/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showToast('Profile updated successfully');
+                } else {
+                    showMessage(data.error || 'Failed to update profile. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Profile update error:', error);
+                showMessage('Network error. Please check your connection and try again.', 'error');
+            } finally {
+                // Remove loading state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Cancel edit function
+        function cancelEdit() {
+            window.location.href = 'dashboard.html';
+        }
+
+        // Clear errors on input
+        ['fullName', 'purpose'].forEach(fieldId => {
+            document.getElementById(fieldId).addEventListener('input', () => clearFieldError(fieldId));
+        });
+
+        // Check authentication and load profile
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('coffers_token') || sessionStorage.getItem('coffers_token');
+            if (!token) {
+                // User not authenticated, redirect to login
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load existing profile data
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

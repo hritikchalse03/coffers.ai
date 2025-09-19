@@ -419,8 +419,8 @@
                 <li><a href="#company">Company</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="#signin" class="btn btn-secondary">Sign in</a>
-                <a href="#getstarted" class="btn btn-primary">Get started</a>
+                <a href="pages/login.html" class="btn btn-secondary">Sign in</a>
+                <a href="pages/register.html" class="btn btn-primary">Get started</a>
             </div>
         </nav>
     </header>
@@ -431,7 +431,7 @@
             <h1>Qualitative & Quantitative analysis to make precise, actionable financial decisions</h1>
             <p>Get actionable insights from earnings calls and market data without reading long transcripts</p>
             <div class="hero-actions">
-                <a href="#getstarted" class="btn btn-primary">Get started</a>
+                <a href="pages/register.html" class="btn btn-primary">Get started</a>
                 <a href="#demo" class="btn btn-secondary">See a demo</a>
             </div>
         </div>
@@ -565,6 +565,20 @@
         // Add loading states for demo purposes
         document.addEventListener('DOMContentLoaded', function() {
             console.log('coffers.ai loaded successfully');
+            
+            // Check if user is already logged in
+            const auth = localStorage.getItem('auth');
+            if (auth === '1') {
+                // User is already logged in, check if profile is complete
+                const profile = localStorage.getItem('coffers_profile');
+                if (profile) {
+                    // Profile exists, go to dashboard
+                    window.location.href = 'pages/dashboard.html';
+                } else {
+                    // No profile, go to profile setup
+                    window.location.href = 'pages/profile-setup.html';
+                }
+            }
         });
     </script>
 </body>

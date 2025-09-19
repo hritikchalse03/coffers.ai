@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Coffers.ai</title>
+    <title>Sign In - Coffers.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -62,7 +62,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: var(--font-family);
             font-size: var(--font-size-base);
@@ -170,8 +170,8 @@
             color: var(--color-black);
         }
 
-        /* Register Section */
-        .register-section {
+        /* Login Section */
+        .login-section {
             min-height: calc(100vh - 72px);
             display: flex;
             align-items: center;
@@ -179,7 +179,7 @@
             padding: var(--space-8) 0;
         }
 
-        .register-card {
+        .login-card {
             background-color: var(--color-white);
             border: 1px solid var(--color-divider);
             border-radius: var(--radius-lg);
@@ -188,18 +188,18 @@
             width: 100%;
             max-width: 400px;
         }
-        
-        .register-header {
+
+        .login-header {
             text-align: center;
             margin-bottom: var(--space-8);
         }
 
-        .register-header h1 {
+        .login-header h1 {
             font-size: var(--font-size-2xl);
             margin-bottom: var(--space-2);
         }
 
-        .register-header p {
+        .login-header p {
             font-size: var(--font-size-sm);
         }
 
@@ -207,7 +207,7 @@
         .form-group {
             margin-bottom: var(--space-6);
         }
-        
+
         .form-label {
             display: block;
             font-size: var(--font-size-sm);
@@ -215,7 +215,7 @@
             color: var(--color-heading);
             margin-bottom: var(--space-2);
         }
-        
+
         .form-input {
             width: 100%;
             padding: var(--space-3) var(--space-4);
@@ -225,7 +225,7 @@
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
             background-color: var(--color-white);
         }
-        
+
         .form-input:focus {
             outline: none;
             border-color: var(--color-black);
@@ -251,19 +251,16 @@
             display: block;
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: var(--space-4);
-        }
-
         .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: var(--space-6);
         }
-        
+
         .checkbox-group {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             gap: var(--space-2);
         }
 
@@ -271,25 +268,25 @@
             width: 16px;
             height: 16px;
             accent-color: var(--color-black);
-            margin-top: 2px;
         }
-        
+
         .checkbox-label {
             font-size: var(--font-size-sm);
             color: var(--color-muted);
             cursor: pointer;
-            line-height: 1.5;
         }
-        
-        .checkbox-label a {
+
+        .forgot-password {
+            font-size: var(--font-size-sm);
             color: var(--color-black);
             text-decoration: none;
+            font-weight: 500;
         }
-        
-        .checkbox-label a:hover {
+
+        .forgot-password:hover {
             text-decoration: underline;
         }
-        
+
         .form-submit {
             width: 100%;
             padding: var(--space-4);
@@ -297,23 +294,23 @@
             margin-bottom: var(--space-6);
         }
 
-        
-        .login-link {
+
+        .signup-link {
             text-align: center;
             font-size: var(--font-size-sm);
             color: var(--color-muted);
         }
-        
-        .login-link a {
+
+        .signup-link a {
             color: var(--color-black);
             text-decoration: none;
             font-weight: 500;
         }
-        
-        .login-link a:hover {
+
+        .signup-link a:hover {
             text-decoration: underline;
         }
-        
+
         /* Loading State */
         .btn.loading {
             position: relative;
@@ -348,7 +345,7 @@
             font-size: var(--font-size-sm);
             display: none;
         }
-        
+
         .message.show {
             display: block;
         }
@@ -371,19 +368,22 @@
                 padding: 0 var(--space-4);
             }
             
-            .register-card {
+            .login-card {
                 padding: var(--space-6);
             }
             
-            .form-row {
-                grid-template-columns: 1fr;
+            .form-options {
+                flex-direction: column;
+                gap: var(--space-4);
+                align-items: flex-start;
             }
         }
 
         /* Focus States for Accessibility */
         .btn:focus,
         .form-input:focus,
-        .login-link a:focus {
+        .forgot-password:focus,
+        .signup-link a:focus {
             outline: 2px solid var(--color-black);
             outline-offset: 2px;
         }
@@ -395,158 +395,74 @@
         <nav class="nav container">
             <a href="../index.html" class="logo">●●● Coffers.ai</a>
             <div class="nav-actions">
-                <a href="login.html" class="btn btn-secondary">Sign in</a>
+                <a href="../index.html" class="btn btn-secondary">Back to Home</a>
             </div>
         </nav>
     </header>
 
-    <!-- Register Section -->
-    <section class="register-section">
+    <!-- Login Section -->
+    <section class="login-section">
         <div class="container-sm">
-            <div class="register-card">
-                <div class="register-header">
-                    <h1>Join Coffers.ai</h1>
-                    <p>Start analyzing earnings calls and market data with AI-powered insights</p>
+            <div class="login-card">
+                <div class="login-header">
+                    <h1>Welcome back to Coffers.ai</h1>
+                    <p>Access your financial research dashboard and earnings analysis tools</p>
                 </div>
 
                 <!-- Success/Error Messages -->
                 <div id="message" class="message"></div>
 
-                <form id="registerForm" class="register-form">
-            <div class="form-row">
-                <div class="form-group">
-                            <label for="firstName" class="form-label">First name</label>
-                    <input 
-                        type="text" 
-                        id="firstName" 
-                                name="firstName" 
-                        class="form-input" 
-                        placeholder="John"
-                        required
-                    >
-                            <div class="form-error" id="firstNameError">First name is required</div>
-                </div>
-                
-                <div class="form-group">
-                            <label for="lastName" class="form-label">Last name</label>
-                    <input 
-                        type="text" 
-                        id="lastName" 
-                                name="lastName" 
-                        class="form-input" 
-                        placeholder="Doe"
-                        required
-                    >
-                            <div class="form-error" id="lastNameError">Last name is required</div>
-                </div>
-            </div>
-            
-            <div class="form-group">
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
                         <label for="email" class="form-label">Email address</label>
-                <input 
-                    type="email" 
-                    id="email" 
+                        <input 
+                            type="email" 
+                            id="email" 
                             name="email" 
-                    class="form-input" 
-                    placeholder="john@example.com"
-                    required
-                >
+                            class="form-input" 
+                            placeholder="Enter your email"
+                            required
+                        >
                         <div class="form-error" id="emailError">Please enter a valid email address</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="password" class="form-label">Password</label>
-                <input 
-                    type="password" 
-                    id="password" 
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
                             name="password" 
-                    class="form-input" 
-                    placeholder="Create a strong password"
-                    required
-                >
-                        <div class="form-error" id="passwordError">Password must be at least 8 characters</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="confirmPassword" class="form-label">Confirm password</label>
-                <input 
-                    type="password" 
-                    id="confirmPassword" 
-                            name="confirmPassword" 
-                    class="form-input" 
-                    placeholder="Confirm your password"
-                    required
-                >
-                        <div class="form-error" id="confirmPasswordError">Passwords do not match</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="company" class="form-label">Company/Organization</label>
-                <input 
-                    type="text" 
-                    id="company" 
-                    name="company" 
-                    class="form-input" 
-                    placeholder="e.g., Goldman Sachs, BlackRock, or Independent"
-                >
-                <div class="form-error" id="companyError">Company is required</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="role" class="form-label">Role</label>
-                <select id="role" name="role" class="form-input">
-                    <option value="">Select your role</option>
-                    <option value="analyst">Financial Analyst</option>
-                    <option value="portfolio-manager">Portfolio Manager</option>
-                    <option value="trader">Trader</option>
-                    <option value="researcher">Research Analyst</option>
-                    <option value="investor">Individual Investor</option>
-                    <option value="student">Student</option>
-                    <option value="other">Other</option>
-                </select>
-                <div class="form-error" id="roleError">Role is required</div>
-            </div>
-            
-            <div class="form-group">
-                <label for="investmentFocus" class="form-label">Investment Focus</label>
-                <select id="investmentFocus" name="investmentFocus" class="form-input">
-                    <option value="">Select your focus</option>
-                    <option value="equities">Equities</option>
-                    <option value="bonds">Fixed Income</option>
-                    <option value="commodities">Commodities</option>
-                    <option value="crypto">Cryptocurrency</option>
-                    <option value="real-estate">Real Estate</option>
-                    <option value="multi-asset">Multi-Asset</option>
-                    <option value="other">Other</option>
-                </select>
-                <div class="form-error" id="investmentFocusError">Investment focus is required</div>
-            </div>
-            
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <div class="form-error" id="passwordError">Password is required</div>
+                    </div>
+
                     <div class="form-options">
-            <div class="checkbox-group">
-                            <input type="checkbox" id="terms" name="terms" class="checkbox" required>
-                <label for="terms" class="checkbox-label">
-                                I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a> for Coffers.ai financial research platform
-                </label>
-            </div>
-            </div>
-            
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="remember" name="remember" class="checkbox">
+                            <label for="remember" class="checkbox-label">Remember me</label>
+                        </div>
+                        <a href="#forgot" class="forgot-password">Forgot password?</a>
+                    </div>
+
                     <button type="submit" class="btn btn-primary form-submit">
-                        Create account
-            </button>
-        </form>
-        
-        
-        <div class="login-link">
-                    Already have an account? <a href="login.html">Sign in</a>
+                        Sign in
+                    </button>
+                </form>
+
+
+                <div class="signup-link">
+                    Don't have an account? <a href="register.html">Sign up</a>
                 </div>
+            </div>
         </div>
-    </div>
     </section>
-    
+
     <script>
         // Form validation and submission
-        const registerForm = document.getElementById('registerForm');
+        const loginForm = document.getElementById('loginForm');
         const messageDiv = document.getElementById('message');
 
         // Show message function
@@ -562,11 +478,6 @@
         function validateEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(email);
-        }
-
-        // Validate password strength
-        function validatePassword(password) {
-            return password.length >= 8;
         }
 
         // Show field error
@@ -585,36 +496,21 @@
             field.classList.remove('error');
             errorDiv.classList.remove('show');
         }
-        
+
         // Form submission
-        registerForm.addEventListener('submit', async function(e) {
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const firstName = document.getElementById('firstName').value;
-            const lastName = document.getElementById('lastName').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const company = document.getElementById('company').value;
-            const role = document.getElementById('role').value;
-            const investmentFocus = document.getElementById('investmentFocus').value;
-            const terms = document.getElementById('terms').checked;
+            const remember = document.getElementById('remember').checked;
 
             // Clear previous errors
-            ['firstName', 'lastName', 'email', 'password', 'confirmPassword', 'company', 'role', 'investmentFocus'].forEach(clearFieldError);
+            clearFieldError('email');
+            clearFieldError('password');
 
             // Validate form
             let isValid = true;
-
-            if (!firstName.trim()) {
-                showFieldError('firstName', 'First name is required');
-                isValid = false;
-            }
-
-            if (!lastName.trim()) {
-                showFieldError('lastName', 'Last name is required');
-                isValid = false;
-            }
 
             if (!email) {
                 showFieldError('email', 'Email is required');
@@ -627,81 +523,52 @@
             if (!password) {
                 showFieldError('password', 'Password is required');
                 isValid = false;
-            } else if (!validatePassword(password)) {
-                showFieldError('password', 'Password must be at least 8 characters');
-                isValid = false;
-            }
-
-            if (!confirmPassword) {
-                showFieldError('confirmPassword', 'Please confirm your password');
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                showFieldError('confirmPassword', 'Passwords do not match');
-                isValid = false;
-            }
-            
-            if (!company.trim()) {
-                showFieldError('company', 'Company/Organization is required');
-                isValid = false;
-            }
-
-            if (!role) {
-                showFieldError('role', 'Please select your role');
-                isValid = false;
-            }
-
-            if (!investmentFocus) {
-                showFieldError('investmentFocus', 'Please select your investment focus');
-                isValid = false;
-            }
-            
-            if (!terms) {
-                showMessage('Please accept the Terms of Service and Privacy Policy', 'error');
-                isValid = false;
             }
 
             if (!isValid) return;
-            
+
             // Show loading state
             const submitBtn = document.querySelector('.form-submit');
             submitBtn.classList.add('loading');
             submitBtn.disabled = true;
 
             try {
-                // Make API call to register endpoint
-                const response = await fetch('/api/auth/register', {
+                // Make API call to login endpoint
+                const response = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        firstName: firstName,
-                        lastName: lastName,
                         email: email,
-                        password: password,
-                        company: company,
-                        role: role,
-                        investmentFocus: investmentFocus
+                        password: password
                     })
                 });
 
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Store token
-                    localStorage.setItem('coffers_token', data.accessToken);
+                    // Store auth flag for prototype
+                    localStorage.setItem('auth', '1');
+                    
+                    // Store token if remember me is checked
+                    if (remember) {
+                        localStorage.setItem('coffers_token', data.accessToken);
+                    } else {
+                        sessionStorage.setItem('coffers_token', data.accessToken);
+                    }
 
-                    showMessage('Welcome to Coffers.ai! Your financial research account is ready. Redirecting...', 'success');
+                    showMessage('Welcome back! Setting up your profile...', 'success');
                     
                     // Redirect to profile setup after 1 second
                     setTimeout(() => {
                         window.location.href = 'profile-setup.html';
                     }, 1000);
                 } else {
-                    showMessage(data.error || 'Registration failed. Please try again.', 'error');
+                    showMessage(data.error || 'Login failed. Please try again.', 'error');
                 }
-                } catch (error) {
-                console.error('Registration error:', error);
+            } catch (error) {
+                console.error('Login error:', error);
                 showMessage('Network error. Please check your connection and try again.', 'error');
             } finally {
                 // Remove loading state
@@ -711,16 +578,22 @@
         });
 
         // Clear errors on input
-        ['firstName', 'lastName', 'email', 'password', 'confirmPassword', 'company', 'role', 'investmentFocus'].forEach(fieldId => {
-            document.getElementById(fieldId).addEventListener('input', () => clearFieldError(fieldId));
-        });
+        document.getElementById('email').addEventListener('input', () => clearFieldError('email'));
+        document.getElementById('password').addEventListener('input', () => clearFieldError('password'));
 
         // Check if user is already logged in
         window.addEventListener('load', function() {
-            const token = localStorage.getItem('coffers_token') || sessionStorage.getItem('coffers_token');
-            if (token) {
-                // User is already logged in, redirect to dashboard
-                window.location.href = 'dashboard.html';
+            const auth = localStorage.getItem('auth');
+            if (auth === '1') {
+                // User is already logged in, check if profile is complete
+                const profile = localStorage.getItem('coffers_profile');
+                if (profile) {
+                    // Profile exists, go to dashboard
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // No profile, go to profile setup
+                    window.location.href = 'profile-setup.html';
+                }
             }
         });
     </script>

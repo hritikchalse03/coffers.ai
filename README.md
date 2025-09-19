@@ -110,6 +110,10 @@ coffers-ai/
 - `POST /api/auth/register` - User registration
 - `POST /api/auth/login` - User login
 
+### User Profile (Protected)
+- `GET /api/user/profile` - Get user profile
+- `POST /api/user/profile` - Create/update user profile
+
 ### Companies
 - `GET /api/companies` - Get all companies
 - `GET /api/companies/:symbol` - Get specific company details
@@ -162,6 +166,110 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🆘 Support
 
 For support, email support@coffers.ai or create an issue in the GitHub repository.
+
+## 👤 User Profile System
+
+### Profile Data Collection
+The platform collects finance-specific user profile information to personalize the experience with industry-relevant insights:
+
+**Required Fields:**
+- **Full Name** (string, max 80 characters) - PII
+- **Purpose/Expectation** (string, max 140 characters) - User intent with placeholder: "Analyze transcripts faster; track earnings events; summarize calls."
+
+**Optional Fields:**
+- **Industry** (searchable dropdown + "Other" option) - Finance-specific industries:
+  - Investment Banking (M&A, ECM, DCM)
+  - Equity Research (Sell-Side)
+  - Buy-Side: Asset Management / Mutual Funds
+  - Hedge Funds
+  - Private Equity
+  - Venture Capital
+  - Wealth / Private Banking
+  - Retail Brokerage
+  - Commercial Banking
+  - Corporate Finance / Treasury (Issuer)
+  - Investor Relations (Issuer)
+  - Sales & Trading (Sell-Side)
+  - Proprietary / HFT Trading
+  - Quantitative Finance / Market Making
+  - Risk Management
+  - Compliance / Regulatory (AML/KYC)
+  - Credit Ratings / Research
+  - Insurance / Actuarial
+  - Real Estate Finance / REITs
+  - Project / Infrastructure Finance
+  - Sovereign Wealth / Family Office
+  - Market Data / Research Providers
+  - Exchanges / ATS / ECN
+  - Audit / Advisory / Valuations
+  - FinTech / Payments / Data Platforms
+  - Other → free-text input
+
+- **Role** (searchable dropdown + "Other" option) - Finance-specific roles:
+  - Analyst (Investment Banking)
+  - Associate (Investment Banking)
+  - Equity Research Analyst
+  - Credit Research Analyst
+  - Portfolio Manager
+  - Investment Analyst (Buy-Side)
+  - Trader / Execution Trader
+  - Quant Researcher
+  - Quant Developer / Financial Engineer
+  - Risk Analyst / Risk Manager
+  - Compliance Officer / AML/KYC Analyst
+  - Corporate Finance / Treasury Analyst
+  - Corporate Development / M&A
+  - Investor Relations Manager
+  - Product Manager (FinTech / Data)
+  - Data Scientist (Finance)
+  - Derivatives Structurer
+  - Credit Analyst / Underwriter
+  - PE / VC Investment Associate
+  - Fund Accountant / Performance
+  - Strategy / BI Analyst
+  - Financial Advisor / Wealth Manager
+  - Operations (Middle / Back Office)
+  - Other → free-text input
+
+- **Job Function** (multi-select up to 3, with highlighted options + "Other") - Finance-specific functions:
+  - Research & Analysis (highlighted)
+  - Investment / Trading Execution (highlighted)
+  - Valuation & Modeling
+  - Diligence & Deal Execution
+  - Portfolio Construction & PM
+  - Risk & Limits Management
+  - Compliance / Surveillance
+  - Market & Macro Monitoring
+  - Fundamentals / Earnings Review
+  - Client Reporting & Performance
+  - Data Engineering / Pipelines
+  - Quant Research / Backtesting
+  - Product / Platform Management
+  - Pricing & Liquidity
+  - Treasury / Cash Management
+  - IR Communications
+  - Strategy / Competitive Intel
+  - Other → free-text input
+
+### Data Classification
+- **PII**: Full Name only
+- **Profiling Data**: Industry, Role, Job Function, Purpose
+- **Storage**: Local storage for prototype (TODO: migrate to database)
+
+### Profile Flow
+1. User completes login → Redirected to full-page Profile Info screen
+2. Multi-section layout with carded sections and generous whitespace
+3. Searchable dropdowns with keyboard support and "Other" handling
+4. Multi-select Job Function with pill chips and highlighted popular options
+5. Client-side validation for required fields with inline error messages
+6. Skip-friendly flow - users can access Dashboard without completing profile
+7. Dashboard shows dismissible banner if profile is incomplete
+8. Profile can be completed later via banner link
+
+### "Other" Text Capture Behavior
+- When "Other" is selected in any dropdown, a compact text input appears
+- Input value is persisted and included in profile data
+- Allows for custom industry/role/function specification
 
 ## 🗺️ Roadmap
 
