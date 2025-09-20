@@ -271,8 +271,124 @@ The platform collects finance-specific user profile information to personalize t
 - Input value is persisted and included in profile data
 - Allows for custom industry/role/function specification
 
+## 📊 Dashboard
+
+The coffers.ai Dashboard provides a comprehensive view of financial markets with four key pillars:
+
+### Recent Earnings Calls
+- **Purpose**: Display latest and upcoming earnings calls for user's watchlist
+- **Features**: 
+  - Live status indicators with auto-refresh every 30 seconds
+  - Filter by status (Live/Upcoming/Ended) and date range
+  - Quick actions: View Event, Open Transcript, Pin
+  - Real-time updates for live events
+- **Data Source**: Events API with WebSocket support for live updates
+- **Refresh Rate**: 30 seconds for live events, 5 minutes for upcoming/ended
+
+### Qualitative Analysis (AI)
+- **Purpose**: AI-powered insights from recent earnings call transcripts
+- **Features**:
+  - **Summary Tab**: 5-7 key bullet points from latest calls
+  - **Themes Tab**: Recurring topics with supporting snippets and timestamps
+  - **Sentiment Tab**: Visual sentiment analysis with positive/neutral/negative breakdown
+  - Non-blocking "Refresh Insights" button for AI processing
+- **Data Source**: AI processing of transcript data with caching
+- **Refresh Rate**: Manual refresh with 2-second processing simulation
+
+### Quant Analytics (QoQ vs Last Quarter)
+- **Purpose**: Compare core KPIs quarter-over-quarter and year-over-year
+- **KPIs Tracked**:
+  - Revenue, Gross Margin %, Operating Margin %
+  - EPS (diluted), Free Cash Flow, Guidance Δ
+  - DAU/MAU, Churn/Net Retention (for SaaS companies)
+- **Features**:
+  - QoQ and YoY percentage calculations
+  - Mini sparkline charts for trend visualization
+  - Trend indicators (▲/▼) with color coding
+  - Detailed modal view with 6-quarter history
+- **Data Source**: Fundamentals API with quarterly KPI data
+- **Refresh Rate**: 5 minutes with manual refresh option
+
+### Investment Analytics
+- **Purpose**: Quick valuation and price action analysis
+- **Metrics**:
+  - **Valuation**: P/E (TTM), EV/EBITDA (TTM), P/S (TTM)
+  - **Price Action**: 1D, 1W, 1M % changes, Volume vs 30D average
+  - **Risk/Momentum**: 20D volatility, 14-period RSI
+- **Features**:
+  - Multi-company comparison (up to 3 tickers)
+  - 30-day price sparklines
+  - Comparison table for valuation metrics
+- **Data Source**: Market data API with real-time price feeds
+- **Refresh Rate**: 1 minute for price data, 5 minutes for valuation metrics
+
+### Watchlist
+- **Purpose**: Manage and track selected companies
+- **Features**:
+  - Add/remove companies with search functionality
+  - Real-time price updates and 1D change indicators
+  - Persistent storage in localStorage
+  - Pre-seeded with popular tickers for demo
+- **Data Source**: Companies API for search, Market API for prices
+- **Refresh Rate**: 1 minute for price updates
+
+### Data Architecture
+
+#### Data Adapters
+The dashboard uses a lightweight data adapter layer for easy migration from mock to real APIs:
+
+```
+client/src/lib/data/adapters/
+├── companies.ts    # Company search and profiles
+├── events.ts       # Earnings calls and transcripts
+├── market.ts       # Price data and market metrics
+└── fundamentals.ts # KPI data and financial metrics
+```
+
+#### Caching System
+- **TTL-based caching** with configurable expiration times
+- **Per-key caching** for different data types
+- **Cache invalidation** on manual refresh
+- **Memory-efficient** with automatic cleanup
+
+#### API Stubs
+Mock API endpoints ready for real-time integration:
+
+```
+/api/events/recent?tickers=AAPL,MSFT
+/api/insights/recent?tickers=AAPL,MSFT
+/api/fundamentals/kpis?tickers=AAPL,MSFT
+/api/market/snapshot?tickers=AAPL,MSFT
+```
+
+### Responsive Design
+- **Desktop**: Two-column layout (2/3 left, 1/3 right)
+- **Mobile**: Single-column stacked layout
+- **Breakpoints**: 768px (mobile), 1024px (tablet), 1200px (desktop)
+- **Accessibility**: ARIA labels, keyboard navigation, focus management
+
+### Performance Optimizations
+- **Lazy loading** for below-fold components
+- **Debounced calculations** for expensive operations
+- **Efficient re-renders** with React optimization
+- **Cached API calls** to reduce network requests
+- **Skeleton loading states** for better UX
+
+### Analytics Integration
+The dashboard tracks user interactions for product insights:
+- `dashboard_viewed` - When dashboard loads
+- `events_refreshed` - Manual event refresh
+- `insights_refreshed` - AI insights refresh
+- `kpis_viewed` - KPI data access
+- `snapshot_refreshed` - Market data refresh
+
 ## 🗺️ Roadmap
 
+- [x] Dynamic Dashboard with four pillars
+- [x] Data adapter layer with mock data
+- [x] Responsive two-column layout
+- [x] Auto-refresh functionality
+- [x] API stubs for real-time integration
 - [ ] Real-time WebSocket connections
 - [ ] Advanced AI-powered analytics
 - [ ] Mobile app development
