@@ -53,19 +53,20 @@ npm run dev
 
 ### Deploy to Vercel
 
-1. Install Vercel CLI:
+1. **Automatic Deployment**: Pushing to the `main` branch automatically triggers Vercel deployment
+2. **Manual Deployment**: Install Vercel CLI and deploy:
 ```bash
 npm i -g vercel
-```
-
-2. Deploy:
-```bash
 vercel
 ```
 
-3. Set environment variables in Vercel dashboard:
+3. **Environment Variables** (set in Vercel dashboard):
    - `JWT_SECRET`: Your JWT secret key
    - `NODE_ENV`: production
+   - `PROTOTYPE_AUTH`: true (for prototype mode) or false (for normal auth)
+   - `VITE_PROTOTYPE_AUTH`: true (client-side prototype mode)
+
+4. **Prototype Mode**: Default enabled for demos - all routes accessible without authentication
 
 ### Deploy to GitHub
 
@@ -317,7 +318,20 @@ The platform collects finance-specific user profile information to personalize t
 
 ## 📊 Dashboard
 
-The coffers.ai Dashboard provides a comprehensive view of financial markets with four key pillars:
+The coffers.ai Dashboard provides a comprehensive view of financial markets with four key pillars, designed with a coherent theme that matches the Index/Login/Profile pages:
+
+### Design System Consistency
+- **Typography**: Inter font family with consistent sizing and weights
+- **Colors**: Pure white background (#FFFFFF), near-black text (#0A0A0A), neutral grays
+- **Spacing**: 8-point grid system with generous whitespace
+- **Components**: Consistent cards, buttons, inputs, and interactive elements
+- **Responsive**: Mobile-first design with breakpoints at 768px, 1024px, 1200px
+
+### Dashboard Layout
+- **Header**: Sticky navigation with logo, search, and user menu
+- **Main Content**: Two-column layout (2/3 left, 1/3 right) on desktop, stacked on mobile
+- **Greeting**: "Welcome, {firstName}!" with inline firstName prompt if missing
+- **Prototype Mode**: All routes accessible without authentication
 
 ### Recent Earnings Calls
 - **Purpose**: Display latest and upcoming earnings calls for user's watchlist
@@ -383,10 +397,9 @@ The dashboard uses a lightweight data adapter layer for easy migration from mock
 
 ```
 client/src/lib/data/adapters/
-├── companies.ts    # Company search and profiles
-├── events.ts       # Earnings calls and transcripts
-├── market.ts       # Price data and market metrics
-└── fundamentals.ts # KPI data and financial metrics
+├── events.js       # Earnings calls and transcripts
+├── market.js       # Price data and market metrics
+└── fundamentals.js # KPI data and financial metrics
 ```
 
 #### Caching System
@@ -394,6 +407,12 @@ client/src/lib/data/adapters/
 - **Per-key caching** for different data types
 - **Cache invalidation** on manual refresh
 - **Memory-efficient** with automatic cleanup
+
+#### Mock Data Integration
+- **Events**: Live/upcoming/ended earnings calls with transcripts
+- **Fundamentals**: 6-quarter KPI history with QoQ/YoY calculations
+- **Market**: Real-time price data with technical indicators
+- **Watchlist**: Company search and price tracking
 
 #### API Stubs
 Mock API endpoints ready for real-time integration:
