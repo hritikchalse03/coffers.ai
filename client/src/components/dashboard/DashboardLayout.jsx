@@ -11,203 +11,30 @@ import Watchlist from './Watchlist';
 
 const Container = styled.div`
   min-height: 100vh;
-  background: #FFFFFF;
+  background: ${props => props.theme.colors.white};
 `;
 
 const MainContent = styled.main`
   max-width: 1400px;
   margin: 0 auto;
-  padding: 24px;
+  padding: ${props => props.theme.spacing[6]};
   
-  @media (max-width: 768px) {
-    padding: 16px;
-  }
-`;
-
-const ProfileBanner = styled.div`
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-  color: white;
-  padding: 16px 20px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-  display: ${props => props.hidden ? 'none' : 'flex'};
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-`;
-
-const ProfileBannerContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
-const ProfileBannerIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-`;
-
-const ProfileBannerText = styled.div`
-  h3 {
-    color: white;
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  
-  p {
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
-    font-size: 14px;
-  }
-`;
-
-const ProfileBannerActions = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-`;
-
-const ProfileBannerBtn = styled.button`
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  
-  &:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.5);
-  }
-`;
-
-const ProfileBannerDismiss = styled.button`
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.7);
-  cursor: pointer;
-  font-size: 1.2rem;
-  padding: 4px;
-  border-radius: 4px;
-  transition: all 0.2s;
-  
-  &:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-  }
-`;
-
-const DashboardGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-`;
-
-const LeftColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-`;
-
-const WelcomeSection = styled.section`
-  margin-bottom: 24px;
-  
-  h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 8px 0;
-  }
-  
-  p {
-    color: #6B7280;
-    font-size: 16px;
-    margin: 0;
-  }
-`;
-
-const RefreshIndicator = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #6B7280;
-  font-size: 14px;
-  margin-bottom: 16px;
-`;
-
-const RefreshButton = styled.button`
-  background: none;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: #F9FAFB;
-    border-color: #9CA3AF;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const AutoRefreshToggle = styled.button`
-  background: none;
-  border: none;
-  color: #6B7280;
-  font-size: 14px;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.2s;
-
-  &:hover {
-    color: #374151;
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
+    padding: ${props => props.theme.spacing[4]};
   }
 `;
 
 const FirstNamePrompt = styled.div`
-  background: #F9FAFB;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 24px;
+  background: ${props => props.theme.colors.panel};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing[6]};
+  margin-bottom: ${props => props.theme.spacing[6]};
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: ${props => props.theme.spacing[4]};
   
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     flex-direction: column;
     text-align: center;
   }
@@ -217,66 +44,67 @@ const FirstNamePromptContent = styled.div`
   flex: 1;
   
   h3 {
-    color: #111827;
-    margin: 0 0 4px 0;
-    font-size: 16px;
-    font-weight: 600;
+    color: ${props => props.theme.colors.heading};
+    margin: 0 0 ${props => props.theme.spacing[1]} 0;
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
   }
   
   p {
-    color: #6B7280;
+    color: ${props => props.theme.colors.muted};
     margin: 0;
-    font-size: 14px;
+    font-size: ${props => props.theme.typography.fontSize.sm};
   }
 `;
 
 const FirstNameForm = styled.form`
   display: flex;
-  gap: 12px;
+  gap: ${props => props.theme.spacing[3]};
   align-items: center;
   
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     width: 100%;
     flex-direction: column;
   }
 `;
 
 const FirstNameInput = styled.input`
-  padding: 8px 12px;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  font-size: ${props => props.theme.typography.fontSize.sm};
   min-width: 200px;
+  background: ${props => props.theme.colors.white};
   
   &:focus {
     outline: none;
-    border-color: #111827;
-    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+    border-color: ${props => props.theme.colors.black};
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
   }
   
   &.error {
-    border-color: #DC2626;
+    border-color: ${props => props.theme.colors.error};
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     width: 100%;
     min-width: auto;
   }
 `;
 
 const FirstNameButton = styled.button`
-  background: #111827;
-  color: white;
+  background: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
   border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
+  border-radius: ${props => props.theme.borderRadius.sm};
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[4]};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
   cursor: pointer;
   transition: background-color 0.2s;
   
   &:hover {
-    background: #374151;
+    background: ${props => props.theme.colors.muted};
   }
   
   &:disabled {
@@ -284,84 +112,67 @@ const FirstNameButton = styled.button`
     cursor: not-allowed;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: ${props => props.theme.breakpoints.mobile}) {
     width: 100%;
   }
 `;
 
 const FirstNameError = styled.div`
-  color: #DC2626;
-  font-size: 12px;
-  margin-top: 4px;
+  color: ${props => props.theme.colors.error};
+  font-size: ${props => props.theme.typography.fontSize.xs};
+  margin-top: ${props => props.theme.spacing[1]};
   display: ${props => props.show ? 'block' : 'none'};
+`;
+
+const WelcomeSection = styled.section`
+  margin-bottom: ${props => props.theme.spacing[8]};
+  
+  h1 {
+    font-size: ${props => props.theme.typography.fontSize['4xl']};
+    font-weight: ${props => props.theme.typography.fontWeight.bold};
+    color: ${props => props.theme.colors.heading};
+    margin: 0 0 ${props => props.theme.spacing[2]} 0;
+    letter-spacing: -0.025em;
+  }
+  
+  p {
+    color: ${props => props.theme.colors.muted};
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    margin: 0;
+  }
+`;
+
+const DashboardGrid = styled.div`
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: ${props => props.theme.spacing[6]};
+  
+  @media (max-width: ${props => props.theme.breakpoints.tablet}) {
+    grid-template-columns: 1fr;
+    gap: ${props => props.theme.spacing[5]};
+  }
+`;
+
+const LeftColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[6]};
+`;
+
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.theme.spacing[6]};
 `;
 
 const DashboardLayout = () => {
   const { user, setFirstName } = useAuth();
-  const [profileBannerHidden, setProfileBannerHidden] = useState(false);
-  const [selectedTickers, setSelectedTickers] = useState([]);
-  const [lastRefresh, setLastRefresh] = useState(Date.now());
-  const [autoRefreshEnabled, setAutoRefreshEnabled] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [selectedTickers, setSelectedTickers] = useState(['AAPL', 'MSFT', 'TSLA']);
   
   // FirstName prompt state
   const [firstNameValue, setFirstNameValue] = useState('');
   const [firstNameError, setFirstNameError] = useState('');
   const [isSubmittingFirstName, setIsSubmittingFirstName] = useState(false);
-
-  useEffect(() => {
-    // Check if profile banner was previously dismissed
-    const bannerDismissed = localStorage.getItem('profileBannerDismissed');
-    if (bannerDismissed === 'true') {
-      setProfileBannerHidden(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Auto-refresh every 30 seconds if enabled
-    if (!autoRefreshEnabled) return;
-
-    const interval = setInterval(() => {
-      handleRefresh();
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [autoRefreshEnabled]);
-
-  const dismissProfileBanner = () => {
-    setProfileBannerHidden(true);
-    localStorage.setItem('profileBannerDismissed', 'true');
-  };
-
-  const handleTickersChange = (tickers) => {
-    setSelectedTickers(tickers);
-  };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setLastRefresh(Date.now());
-    
-    // Simulate refresh delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    setIsRefreshing(false);
-  };
-
-  const toggleAutoRefresh = () => {
-    setAutoRefreshEnabled(!autoRefreshEnabled);
-  };
-
-  const formatLastRefresh = (timestamp) => {
-    const now = Date.now();
-    const diff = now - timestamp;
-    const seconds = Math.floor(diff / 1000);
-    
-    if (seconds < 60) return `${seconds}s ago`;
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    return `${hours}h ago`;
-  };
 
   const handleFirstNameSubmit = async (e) => {
     e.preventDefault();
@@ -422,70 +233,33 @@ const DashboardLayout = () => {
           </FirstNamePrompt>
         )}
 
-        {/* Profile Completion Banner */}
-        <ProfileBanner hidden={profileBannerHidden || needsFirstName}>
-          <ProfileBannerContent>
-            <ProfileBannerIcon>👤</ProfileBannerIcon>
-            <ProfileBannerText>
-              <h3>Finish your profile</h3>
-              <p>Complete your profile to personalize your experience with finance-specific insights</p>
-            </ProfileBannerText>
-          </ProfileBannerContent>
-          <ProfileBannerActions>
-            <ProfileBannerBtn as="a" href="/profile-setup">
-              Complete Profile
-            </ProfileBannerBtn>
-            <ProfileBannerDismiss onClick={dismissProfileBanner}>
-              ×
-            </ProfileBannerDismiss>
-          </ProfileBannerActions>
-        </ProfileBanner>
-
         {/* Welcome Section */}
         <WelcomeSection>
           <h1>Welcome{user?.firstName ? `, ${user.firstName}` : ', there'}!</h1>
           <p>Here's what's happening in the markets today</p>
         </WelcomeSection>
 
-        {/* Refresh Controls */}
-        <RefreshIndicator>
-          <RefreshButton 
-            onClick={handleRefresh} 
-            disabled={isRefreshing}
-          >
-            {isRefreshing ? 'Refreshing...' : 'Refresh'}
-          </RefreshButton>
-          <span>Last updated: {formatLastRefresh(lastRefresh)}</span>
-          <AutoRefreshToggle onClick={toggleAutoRefresh}>
-            {autoRefreshEnabled ? 'Disable' : 'Enable'} auto-refresh
-          </AutoRefreshToggle>
-        </RefreshIndicator>
-
         {/* Dashboard Grid */}
         <DashboardGrid>
           <LeftColumn>
             <RecentEarningsCalls 
               tickers={selectedTickers} 
-              onRefresh={handleRefresh}
             />
             <QualitativeAnalysis 
               tickers={selectedTickers} 
-              onRefresh={handleRefresh}
             />
             <QuantAnalytics 
               tickers={selectedTickers} 
-              onRefresh={handleRefresh}
             />
           </LeftColumn>
           
           <RightColumn>
             <InvestmentAnalytics 
               tickers={selectedTickers} 
-              onRefresh={handleRefresh}
             />
             <Watchlist 
               tickers={selectedTickers} 
-              onTickersChange={handleTickersChange}
+              onTickersChange={setSelectedTickers}
             />
           </RightColumn>
         </DashboardGrid>

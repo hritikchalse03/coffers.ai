@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { getQuarterlyKPIs, calculateQoQChange, calculateYoYChange } from '../../lib/data/adapters/fundamentals';
-import { withCache, createCacheKey, CACHE_TTL } from '../../lib/cache';
+import cache from '../../lib/cache';
 
 const Card = styled.div`
-  background: white;
-  border: 1px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing[6]};
+  box-shadow: ${props => props.theme.shadows.sm};
 `;
 
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
+  margin-bottom: ${props => props.theme.spacing[6]};
+  
+  h2 {
+    font-size: ${props => props.theme.typography.fontSize.xl};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+    color: ${props => props.theme.colors.heading};
+    margin: 0;
+  }
 `;
 
 const RefreshButton = styled.button`
-  background: none;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 14px;
-  color: #374151;
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.muted};
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background: #F9FAFB;
-    border-color: #9CA3AF;
+    background: ${props => props.theme.colors.panel};
+    border-color: ${props => props.theme.colors.muted};
   }
 
   &:disabled {
@@ -49,99 +48,61 @@ const RefreshButton = styled.button`
 
 const KPIGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: ${props => props.theme.spacing[4]};
 `;
 
-const KPITile = styled.div`
-  background: #F9FAFB;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
-  padding: 16px;
-  transition: all 0.2s;
-  cursor: pointer;
-
-  &:hover {
-    background: #F3F4F6;
-    border-color: #D1D5DB;
-  }
+const KPICard = styled.div`
+  background: ${props => props.theme.colors.panel};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  padding: ${props => props.theme.spacing[4]};
 `;
 
-const KPITitle = styled.div`
-  font-size: 14px;
-  font-weight: 500;
-  color: #6B7280;
-  margin-bottom: 8px;
+const KPILabel = styled.div`
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.muted};
+  margin-bottom: ${props => props.theme.spacing[2]};
 `;
 
 const KPIValue = styled.div`
-  font-size: 24px;
-  font-weight: 700;
-  color: #111827;
-  margin-bottom: 4px;
+  font-size: ${props => props.theme.typography.fontSize.lg};
+  font-weight: ${props => props.theme.typography.fontWeight.semibold};
+  color: ${props => props.theme.colors.heading};
+  margin-bottom: ${props => props.theme.spacing[1]};
 `;
 
 const KPIChange = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 8px;
-
+  gap: ${props => props.theme.spacing[1]};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  
   &.positive {
-    color: #059669;
+    color: ${props => props.theme.colors.success};
   }
-
+  
   &.negative {
-    color: #DC2626;
+    color: ${props => props.theme.colors.error};
   }
-
+  
   &.neutral {
-    color: #6B7280;
+    color: ${props => props.theme.colors.muted};
   }
 `;
 
-const TrendChip = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  font-weight: 500;
-
-  &.up {
-    background: #D1FAE5;
-    color: #059669;
-  }
-
-  &.down {
-    background: #FEE2E2;
-    color: #DC2626;
-  }
-
-  &.neutral {
-    background: #F3F4F6;
-    color: #6B7280;
-  }
-`;
-
-const SparklineContainer = styled.div`
-  height: 40px;
-  margin-top: 8px;
-  position: relative;
+const ChangeIndicator = styled.span`
+  font-size: ${props => props.theme.typography.fontSize.xs};
 `;
 
 const Sparkline = styled.div`
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, #E5E7EB 0%, #D1D5DB 50%, #E5E7EB 100%);
-  border-radius: 4px;
+  height: 20px;
+  background: linear-gradient(90deg, ${props => props.theme.colors.divider} 0%, ${props => props.theme.colors.muted} 100%);
+  border-radius: ${props => props.theme.borderRadius.sm};
+  margin-top: ${props => props.theme.spacing[2]};
   position: relative;
   overflow: hidden;
-
+  
   &::after {
     content: '';
     position: absolute;
@@ -149,87 +110,76 @@ const Sparkline = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, #3B82F6 0%, #1D4ED8 100%);
-    border-radius: 4px;
-    transform: scaleX(0.7);
-    transform-origin: left;
+    background: linear-gradient(90deg, transparent 0%, ${props => props.theme.colors.black} 50%, transparent 100%);
     animation: sparkline 2s ease-in-out;
   }
-
+  
   @keyframes sparkline {
-    0% { transform: scaleX(0); }
-    100% { transform: scaleX(0.7); }
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
   }
 `;
 
 const DetailsButton = styled.button`
-  background: none;
-  border: none;
-  color: #3B82F6;
-  font-size: 12px;
-  font-weight: 500;
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  color: ${props => props.theme.colors.muted};
   cursor: pointer;
-  text-decoration: underline;
-  margin-top: 8px;
+  transition: all 0.2s;
+  margin-top: ${props => props.theme.spacing[4]};
+  width: 100%;
 
   &:hover {
-    color: #2563EB;
+    background: ${props => props.theme.colors.panel};
+    border-color: ${props => props.theme.colors.muted};
   }
 `;
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 40px 20px;
-  color: #6B7280;
-
-  h4 {
-    margin: 0 0 8px 0;
-    color: #374151;
+  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[4]};
+  color: ${props => props.theme.colors.muted};
+  
+  h3 {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    margin-bottom: ${props => props.theme.spacing[2]};
   }
-
+  
   p {
-    margin: 0;
-    font-size: 14px;
+    font-size: ${props => props.theme.typography.fontSize.sm};
   }
 `;
 
-const LoadingState = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-  color: #6B7280;
-`;
+const QuantAnalytics = ({ tickers }) => {
+  const [kpis, setKpis] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-// Cached version of getQuarterlyKPIs
-const getCachedQuarterlyKPIs = withCache(
-  getQuarterlyKPIs,
-  (tickers) => createCacheKey('quarterly-kpis', tickers.join(',')),
-  CACHE_TTL.LONG
-);
-
-const QuantAnalytics = ({ tickers = [], onRefresh }) => {
-  const [kpiBlocks, setKpiBlocks] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const loadKPIs = async () => {
-    if (tickers.length === 0) {
-      setKpiBlocks([]);
-      return;
+  const loadKPIs = async (isRefresh = false) => {
+    if (isRefresh) {
+      setRefreshing(true);
+    } else {
+      setLoading(true);
     }
 
-    setLoading(true);
-    setError(null);
-
     try {
-      const data = await getCachedQuarterlyKPIs(tickers);
-      setKpiBlocks(data);
-    } catch (err) {
-      setError('Failed to load KPI data');
-      console.error('Error loading KPIs:', err);
+      const cacheKey = `kpis_${tickers.join(',')}`;
+      let cachedKPIs = cache.get(cacheKey);
+      
+      if (!cachedKPIs || isRefresh) {
+        cachedKPIs = await getQuarterlyKPIs(tickers);
+        cache.set(cacheKey, cachedKPIs, 300000); // 5 minute cache
+      }
+      
+      setKpis(cachedKPIs);
+    } catch (error) {
+      console.error('Failed to load KPIs:', error);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -238,90 +188,52 @@ const QuantAnalytics = ({ tickers = [], onRefresh }) => {
   }, [tickers]);
 
   const handleRefresh = () => {
-    loadKPIs();
-    if (onRefresh) onRefresh();
+    loadKPIs(true);
   };
 
-  const formatValue = (value, kpiName) => {
-    if (kpiName === 'revenue' || kpiName === 'fcf') {
-      if (value >= 1e9) return `$${(value / 1e9).toFixed(1)}B`;
-      if (value >= 1e6) return `$${(value / 1e6).toFixed(1)}M`;
-      return `$${value.toFixed(0)}`;
+  const formatValue = (value, type) => {
+    if (type === 'revenue' || type === 'fcf') {
+      return `$${value}B`;
     }
-    if (kpiName === 'grossMargin' || kpiName === 'operMargin') {
-      return `${value.toFixed(1)}%`;
-    }
-    if (kpiName === 'eps') {
-      return `$${value.toFixed(2)}`;
-    }
-    if (kpiName === 'guidanceDelta') {
-      if (value === 0) return 'No change';
-      return value > 0 ? `+$${(value / 1e9).toFixed(1)}B` : `-$${Math.abs(value) / 1e9}B`;
+    if (type === 'margin' || type === 'eps') {
+      return `${value}%`;
     }
     return value.toString();
   };
 
-  const getTrendDirection = (qoqChange) => {
-    if (qoqChange > 2) return 'up';
-    if (qoqChange < -2) return 'down';
+  const getChangeClass = (change) => {
+    if (change > 0) return 'positive';
+    if (change < 0) return 'negative';
     return 'neutral';
   };
 
-  const getTrendText = (qoqChange) => {
-    if (qoqChange > 2) return `QoQ up ${qoqChange.toFixed(1)}%`;
-    if (qoqChange < -2) return `QoQ down ${Math.abs(qoqChange).toFixed(1)}%`;
-    return 'QoQ stable';
-  };
-
-  const renderKPITile = (kpiName, kpiData, companyName) => {
-    if (!kpiData || kpiData.length < 2) return null;
-
-    const current = kpiData[kpiData.length - 1];
-    const previous = kpiData[kpiData.length - 2];
-    const qoqChange = calculateQoQChange(current.value, previous.value);
-    const trend = getTrendDirection(qoqChange);
-
-    return (
-      <KPITile key={kpiName}>
-        <KPITitle>{kpiName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</KPITitle>
-        <KPIValue>{formatValue(current.value, kpiName)}</KPIValue>
-        <KPIChange className={trend}>
-          {qoqChange > 0 ? '▲' : qoqChange < 0 ? '▼' : '—'} {qoqChange.toFixed(1)}%
-        </KPIChange>
-        <TrendChip className={trend}>
-          {getTrendText(qoqChange)}
-        </TrendChip>
-        <SparklineContainer>
-          <Sparkline />
-        </SparklineContainer>
-        <DetailsButton onClick={() => console.log('Show details for', kpiName)}>
-          Details
-        </DetailsButton>
-      </KPITile>
-    );
+  const getChangeIndicator = (change) => {
+    if (change > 0) return '▲';
+    if (change < 0) return '▼';
+    return '—';
   };
 
   if (loading) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Quant Analytics (QoQ vs Last Quarter)</CardTitle>
+          <h2>Quant Analytics (QoQ vs YoY)</h2>
         </CardHeader>
-        <LoadingState>Loading KPI data...</LoadingState>
+        <div className="skeleton" style={{ height: '400px', borderRadius: '8px' }} />
       </Card>
     );
   }
 
-  if (error) {
+  if (kpis.length === 0) {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Quant Analytics (QoQ vs Last Quarter)</CardTitle>
-          <RefreshButton onClick={handleRefresh}>Retry</RefreshButton>
+          <h2>Quant Analytics (QoQ vs YoY)</h2>
         </CardHeader>
-        <div style={{ color: '#DC2626', textAlign: 'center', padding: '20px' }}>
-          {error}
-        </div>
+        <EmptyState>
+          <h3>No KPI data available</h3>
+          <p>Add companies to your watchlist to see their financial metrics</p>
+        </EmptyState>
       </Card>
     );
   }
@@ -329,43 +241,95 @@ const QuantAnalytics = ({ tickers = [], onRefresh }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Quant Analytics (QoQ vs Last Quarter)</CardTitle>
-        <RefreshButton onClick={handleRefresh} disabled={loading}>
-          Refresh
+        <h2>Quant Analytics (QoQ vs YoY)</h2>
+        <RefreshButton onClick={handleRefresh} disabled={refreshing}>
+          {refreshing ? 'Refreshing...' : 'Refresh'}
         </RefreshButton>
       </CardHeader>
+      
+      {kpis.map((company) => {
+        const latest = company.quarters[0];
+        const previous = company.quarters[1];
+        const yearAgo = company.quarters[4];
 
-      {tickers.length === 0 ? (
-        <EmptyState>
-          <h4>No KPI data</h4>
-          <p>Add tickers to your Watchlist to see quantitative analytics</p>
-        </EmptyState>
-      ) : kpiBlocks.length === 0 ? (
-        <EmptyState>
-          <h4>No KPI data available</h4>
-          <p>Financial data will appear after earnings calls</p>
-        </EmptyState>
-      ) : (
-        <div>
-          {kpiBlocks.map((block) => (
-            <div key={block.ticker} style={{ marginBottom: '32px' }}>
-              <h4 style={{ 
-                fontSize: '16px', 
-                fontWeight: '600', 
-                color: '#111827', 
-                margin: '0 0 16px 0' 
-              }}>
-                {block.company} ({block.ticker})
-              </h4>
-              <KPIGrid>
-                {Object.entries(block.kpis).map(([kpiName, kpiData]) => 
-                  renderKPITile(kpiName, kpiData, block.company)
-                )}
-              </KPIGrid>
-            </div>
-          ))}
-        </div>
-      )}
+        const kpiData = [
+          {
+            label: 'Revenue',
+            value: latest.revenue,
+            qoq: calculateQoQChange(latest.revenue, previous.revenue),
+            yoy: calculateYoYChange(latest.revenue, yearAgo.revenue),
+            type: 'revenue'
+          },
+          {
+            label: 'Gross Margin',
+            value: latest.grossMargin,
+            qoq: calculateQoQChange(latest.grossMargin, previous.grossMargin),
+            yoy: calculateYoYChange(latest.grossMargin, yearAgo.grossMargin),
+            type: 'margin'
+          },
+          {
+            label: 'Operating Margin',
+            value: latest.operatingMargin,
+            qoq: calculateQoQChange(latest.operatingMargin, previous.operatingMargin),
+            yoy: calculateYoYChange(latest.operatingMargin, yearAgo.operatingMargin),
+            type: 'margin'
+          },
+          {
+            label: 'EPS',
+            value: latest.eps,
+            qoq: calculateQoQChange(latest.eps, previous.eps),
+            yoy: calculateYoYChange(latest.eps, yearAgo.eps),
+            type: 'eps'
+          },
+          {
+            label: 'Free Cash Flow',
+            value: latest.fcf,
+            qoq: calculateQoQChange(latest.fcf, previous.fcf),
+            yoy: calculateYoYChange(latest.fcf, yearAgo.fcf),
+            type: 'fcf'
+          },
+          {
+            label: 'Guidance Δ',
+            value: latest.guidance,
+            qoq: calculateQoQChange(latest.guidance, previous.guidance),
+            yoy: calculateYoYChange(latest.guidance, yearAgo.guidance),
+            type: 'guidance'
+          }
+        ];
+
+        return (
+          <div key={company.ticker}>
+            <h3 style={{ 
+              fontSize: '18px', 
+              fontWeight: '600', 
+              color: '#111827', 
+              marginBottom: '16px' 
+            }}>
+              {company.company} ({company.ticker})
+            </h3>
+            <KPIGrid>
+              {kpiData.map((kpi, index) => (
+                <KPICard key={index}>
+                  <KPILabel>{kpi.label}</KPILabel>
+                  <KPIValue>{formatValue(kpi.value, kpi.type)}</KPIValue>
+                  <KPIChange className={getChangeClass(kpi.qoq)}>
+                    <ChangeIndicator>{getChangeIndicator(kpi.qoq)}</ChangeIndicator>
+                    QoQ: {Math.abs(kpi.qoq).toFixed(1)}%
+                  </KPIChange>
+                  <KPIChange className={getChangeClass(kpi.yoy)}>
+                    <ChangeIndicator>{getChangeIndicator(kpi.yoy)}</ChangeIndicator>
+                    YoY: {Math.abs(kpi.yoy).toFixed(1)}%
+                  </KPIChange>
+                  <Sparkline />
+                </KPICard>
+              ))}
+            </KPIGrid>
+            <DetailsButton>
+              View 6-Quarter Details
+            </DetailsButton>
+          </div>
+        );
+      })}
     </Card>
   );
 };

@@ -1,402 +1,266 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { searchCompanies } from '../../lib/data/adapters/companies';
-import { getSnapshot } from '../../lib/data/adapters/market';
-import { withCache, createCacheKey, CACHE_TTL } from '../../lib/cache';
+import { getMarketSnapshot } from '../../lib/data/adapters/market';
+import cache from '../../lib/cache';
 
 const Card = styled.div`
-  background: white;
-  border: 1px solid #E5E7EB;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-  margin-bottom: 24px;
+  background: ${props => props.theme.colors.white};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.md};
+  padding: ${props => props.theme.spacing[6]};
+  box-shadow: ${props => props.theme.shadows.sm};
 `;
 
 const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 18px;
-  font-weight: 600;
-  color: #111827;
-  margin: 0;
-`;
-
-const AddButton = styled.button`
-  background: #3B82F6;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: #2563EB;
+  margin-bottom: ${props => props.theme.spacing[6]};
+  
+  h2 {
+    font-size: ${props => props.theme.typography.fontSize.xl};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+    color: ${props => props.theme.colors.heading};
+    margin: 0;
   }
 `;
 
-const SearchContainer = styled.div`
-  position: relative;
-  margin-bottom: 16px;
+const AddButton = styled.button`
+  background: ${props => props.theme.colors.black};
+  color: ${props => props.theme.colors.white};
+  border: none;
+  border-radius: ${props => props.theme.borderRadius.sm};
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  font-weight: ${props => props.theme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background: ${props => props.theme.colors.muted};
+  }
 `;
 
 const SearchInput = styled.input`
   width: 100%;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  padding: 8px 12px;
-  font-size: 14px;
-  background: white;
-  color: #374151;
-
+  padding: ${props => props.theme.spacing[2]} ${props => props.theme.spacing[3]};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  font-size: ${props => props.theme.typography.fontSize.sm};
+  margin-bottom: ${props => props.theme.spacing[4]};
+  background: ${props => props.theme.colors.white};
+  
   &:focus {
-    outline: 2px solid #3B82F6;
-    outline-offset: 2px;
+    outline: none;
+    border-color: ${props => props.theme.colors.black};
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
   }
-`;
-
-const SearchResults = styled.div`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #D1D5DB;
-  border-radius: 6px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  max-height: 200px;
-  overflow-y: auto;
-`;
-
-const SearchResult = styled.div`
-  padding: 12px;
-  cursor: pointer;
-  border-bottom: 1px solid #E5E7EB;
-  transition: background 0.2s;
-
-  &:hover {
-    background: #F9FAFB;
-  }
-
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const ResultTicker = styled.div`
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 2px;
-`;
-
-const ResultName = styled.div`
-  font-size: 12px;
-  color: #6B7280;
 `;
 
 const WatchlistItems = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: ${props => props.theme.spacing[3]};
 `;
 
 const WatchlistItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  background: #F9FAFB;
-  border: 1px solid #E5E7EB;
-  border-radius: 8px;
+  padding: ${props => props.theme.spacing[3]};
+  border: 1px solid ${props => props.theme.colors.divider};
+  border-radius: ${props => props.theme.borderRadius.sm};
+  background: ${props => props.theme.colors.panel};
   transition: all 0.2s;
 
   &:hover {
-    background: #F3F4F6;
-    border-color: #D1D5DB;
+    border-color: ${props => props.theme.colors.muted};
+    box-shadow: ${props => props.theme.shadows.sm};
   }
 `;
 
 const ItemInfo = styled.div`
   flex: 1;
-`;
-
-const ItemTicker = styled.div`
-  font-weight: 600;
-  color: #111827;
-  margin-bottom: 2px;
-`;
-
-const ItemPrice = styled.div`
-  font-size: 14px;
-  color: #6B7280;
-`;
-
-const ItemChange = styled.div`
-  font-size: 12px;
-  font-weight: 500;
-  margin-right: 8px;
-
-  &.positive {
-    color: #059669;
+  
+  .company {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+    color: ${props => props.theme.colors.heading};
+    margin: 0 0 ${props => props.theme.spacing[1]} 0;
   }
+  
+  .ticker {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    color: ${props => props.theme.colors.muted};
+    margin: 0;
+  }
+`;
 
-  &.negative {
-    color: #DC2626;
+const PriceInfo = styled.div`
+  text-align: right;
+  
+  .price {
+    font-size: ${props => props.theme.typography.fontSize.sm};
+    font-weight: ${props => props.theme.typography.fontWeight.semibold};
+    color: ${props => props.theme.colors.heading};
+    margin: 0 0 ${props => props.theme.spacing[1]} 0;
+  }
+  
+  .change {
+    font-size: ${props => props.theme.typography.fontSize.xs};
+    font-weight: ${props => props.theme.typography.fontWeight.medium};
+    
+    &.positive {
+      color: ${props => props.theme.colors.success};
+    }
+    
+    &.negative {
+      color: ${props => props.theme.colors.error};
+    }
   }
 `;
 
 const RemoveButton = styled.button`
   background: none;
   border: none;
-  color: #6B7280;
+  color: ${props => props.theme.colors.muted};
   cursor: pointer;
-  padding: 4px;
-  border-radius: 4px;
+  padding: ${props => props.theme.spacing[1]};
+  margin-left: ${props => props.theme.spacing[2]};
+  border-radius: ${props => props.theme.borderRadius.sm};
   transition: all 0.2s;
-
+  
   &:hover {
-    background: #FEE2E2;
-    color: #DC2626;
+    background: ${props => props.theme.colors.divider};
+    color: ${props => props.theme.colors.error};
   }
 `;
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 40px 20px;
-  color: #6B7280;
-
-  h4 {
-    margin: 0 0 8px 0;
-    color: #374151;
+  padding: ${props => props.theme.spacing[8]} ${props => props.theme.spacing[4]};
+  color: ${props => props.theme.colors.muted};
+  
+  h3 {
+    font-size: ${props => props.theme.typography.fontSize.lg};
+    margin-bottom: ${props => props.theme.spacing[2]};
   }
-
+  
   p {
-    margin: 0;
-    font-size: 14px;
+    font-size: ${props => props.theme.typography.fontSize.sm};
   }
 `;
 
-const LoadingState = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  color: #6B7280;
-`;
+const Watchlist = ({ tickers, onTickersChange }) => {
+  const [watchlistItems, setWatchlistItems] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(true);
 
-// Cached versions
-const getCachedSnapshot = withCache(
-  getSnapshot,
-  (tickers) => createCacheKey('watchlist-snapshot', tickers.join(',')),
-  CACHE_TTL.SHORT
-);
+  // Default watchlist items
+  const defaultTickers = ['AAPL', 'MSFT', 'TSLA', 'GOOGL'];
 
-const getCachedSearchCompanies = withCache(
-  searchCompanies,
-  (query) => createCacheKey('company-search', query),
-  CACHE_TTL.MEDIUM
-);
-
-const Watchlist = ({ tickers = [], onTickersChange }) => {
-  const [watchlist, setWatchlist] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [showSearch, setShowSearch] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [searchLoading, setSearchLoading] = useState(false);
-
-  // Pre-seeded watchlist for demo
-  const defaultWatchlist = [
-    { ticker: 'AAPL', name: 'Apple Inc.', addedAt: new Date().toISOString() },
-    { ticker: 'MSFT', name: 'Microsoft Corporation', addedAt: new Date().toISOString() },
-    { ticker: 'GOOGL', name: 'Alphabet Inc.', addedAt: new Date().toISOString() }
-  ];
-
-  useEffect(() => {
-    // Load watchlist from localStorage or use default
-    const savedWatchlist = localStorage.getItem('coffers-watchlist');
-    if (savedWatchlist) {
-      setWatchlist(JSON.parse(savedWatchlist));
-    } else {
-      setWatchlist(defaultWatchlist);
-      localStorage.setItem('coffers-watchlist', JSON.stringify(defaultWatchlist));
-    }
-  }, []);
-
-  useEffect(() => {
-    // Update parent component with current tickers
-    const currentTickers = watchlist.map(item => item.ticker);
-    if (onTickersChange) {
-      onTickersChange(currentTickers);
-    }
-  }, [watchlist, onTickersChange]);
-
-  const loadMarketData = async () => {
-    if (watchlist.length === 0) return;
-
+  const loadWatchlistData = async () => {
     setLoading(true);
     try {
-      const tickers = watchlist.map(item => item.ticker);
-      const snapshots = await getCachedSnapshot(tickers);
+      const currentTickers = tickers.length > 0 ? tickers : defaultTickers;
+      const cacheKey = `watchlist_${currentTickers.join(',')}`;
+      let cachedData = cache.get(cacheKey);
       
-      // Update watchlist with current prices
-      const updatedWatchlist = watchlist.map(item => {
-        const snapshot = snapshots.find(s => s.ticker === item.ticker);
-        return {
-          ...item,
-          price: snapshot?.price || 0,
-          change1D: snapshot?.change1D || 0
-        };
-      });
+      if (!cachedData) {
+        cachedData = await getMarketSnapshot(currentTickers);
+        cache.set(cacheKey, cachedData, 60000); // 1 minute cache
+      }
       
-      setWatchlist(updatedWatchlist);
-    } catch (err) {
-      console.error('Error loading market data:', err);
+      setWatchlistItems(cachedData);
+    } catch (error) {
+      console.error('Failed to load watchlist data:', error);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadMarketData();
-  }, [watchlist.length]);
+    loadWatchlistData();
+  }, [tickers]);
 
-  const handleSearch = async (query) => {
-    setSearchQuery(query);
-    
-    if (query.length < 2) {
-      setSearchResults([]);
-      setShowSearch(false);
-      return;
-    }
-
-    setSearchLoading(true);
-    try {
-      const results = await getCachedSearchCompanies(query);
-      setSearchResults(results);
-      setShowSearch(true);
-    } catch (err) {
-      console.error('Error searching companies:', err);
-    } finally {
-      setSearchLoading(false);
-    }
+  const handleRemoveItem = (tickerToRemove) => {
+    const newTickers = tickers.filter(ticker => ticker !== tickerToRemove);
+    onTickersChange(newTickers);
   };
 
-  const handleAddToWatchlist = (ticker, name) => {
-    const newItem = {
-      ticker,
-      name,
-      addedAt: new Date().toISOString()
-    };
-    
-    const updatedWatchlist = [...watchlist, newItem];
-    setWatchlist(updatedWatchlist);
-    localStorage.setItem('coffers-watchlist', JSON.stringify(updatedWatchlist));
-    
-    setSearchQuery('');
-    setSearchResults([]);
-    setShowSearch(false);
-  };
-
-  const handleRemoveFromWatchlist = (ticker) => {
-    const updatedWatchlist = watchlist.filter(item => item.ticker !== ticker);
-    setWatchlist(updatedWatchlist);
-    localStorage.setItem('coffers-watchlist', JSON.stringify(updatedWatchlist));
+  const handleAddItem = () => {
+    // This would typically open a search modal
+    // For now, we'll just show an alert
+    alert('Add company functionality would open a search modal here');
   };
 
   const formatPrice = (price) => {
-    return price ? `$${price.toFixed(2)}` : 'Loading...';
+    return `$${price.toFixed(2)}`;
   };
 
-  const formatChange = (change) => {
-    if (change === undefined || change === null) return '';
+  const formatChange = (change, changePercent) => {
     const sign = change >= 0 ? '+' : '';
-    return `${sign}${change.toFixed(2)}%`;
+    return `${sign}${change.toFixed(2)} (${sign}${changePercent.toFixed(2)}%)`;
   };
 
   const getChangeClass = (change) => {
-    if (change === undefined || change === null) return '';
     return change >= 0 ? 'positive' : 'negative';
   };
+
+  const filteredItems = watchlistItems.filter(item =>
+    item.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    item.ticker.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader>
+          <h2>Watchlist</h2>
+        </CardHeader>
+        <div className="skeleton" style={{ height: '300px', borderRadius: '8px' }} />
+      </Card>
+    );
+  }
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Watchlist</CardTitle>
-        <AddButton onClick={() => setShowSearch(!showSearch)}>
-          Add
+        <h2>Watchlist</h2>
+        <AddButton onClick={handleAddItem}>
+          Add Company
         </AddButton>
       </CardHeader>
-
-      <SearchContainer>
-        <SearchInput
-          type="text"
-          placeholder="Search companies..."
-          value={searchQuery}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
-        {showSearch && (
-          <SearchResults>
-            {searchLoading ? (
-              <div style={{ padding: '12px', textAlign: 'center', color: '#6B7280' }}>
-                Searching...
-              </div>
-            ) : searchResults.length > 0 ? (
-              searchResults.map((result) => (
-                <SearchResult
-                  key={result.ticker}
-                  onClick={() => handleAddToWatchlist(result.ticker, result.name)}
-                >
-                  <ResultTicker>{result.ticker}</ResultTicker>
-                  <ResultName>{result.name}</ResultName>
-                </SearchResult>
-              ))
-            ) : searchQuery.length >= 2 ? (
-              <div style={{ padding: '12px', textAlign: 'center', color: '#6B7280' }}>
-                No companies found
-              </div>
-            ) : null}
-          </SearchResults>
-        )}
-      </SearchContainer>
-
-      {loading ? (
-        <LoadingState>Loading market data...</LoadingState>
-      ) : watchlist.length === 0 ? (
+      
+      <SearchInput
+        type="text"
+        placeholder="Search companies..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      
+      {filteredItems.length === 0 ? (
         <EmptyState>
-          <h4>No companies in watchlist</h4>
+          <h3>No companies in watchlist</h3>
           <p>Add companies to track their performance</p>
         </EmptyState>
       ) : (
         <WatchlistItems>
-          {watchlist.map((item) => (
+          {filteredItems.map((item) => (
             <WatchlistItem key={item.ticker}>
               <ItemInfo>
-                <ItemTicker>{item.ticker}</ItemTicker>
-                <ItemPrice>{formatPrice(item.price)}</ItemPrice>
+                <div className="company">{item.company}</div>
+                <div className="ticker">{item.ticker}</div>
               </ItemInfo>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                {item.change1D !== undefined && (
-                  <ItemChange className={getChangeClass(item.change1D)}>
-                    {formatChange(item.change1D)}
-                  </ItemChange>
-                )}
-                <RemoveButton
-                  onClick={() => handleRemoveFromWatchlist(item.ticker)}
-                  title="Remove from watchlist"
-                >
-                  ×
-                </RemoveButton>
-              </div>
+              <PriceInfo>
+                <div className="price">{formatPrice(item.price)}</div>
+                <div className={`change ${getChangeClass(item.change)}`}>
+                  {formatChange(item.change, item.changePercent)}
+                </div>
+              </PriceInfo>
+              <RemoveButton onClick={() => handleRemoveItem(item.ticker)}>
+                ×
+              </RemoveButton>
             </WatchlistItem>
           ))}
         </WatchlistItems>
