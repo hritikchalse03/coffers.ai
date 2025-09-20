@@ -1,10 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import Button from '../components/Button'
-import Card from '../components/Card'
 
 const Container = styled.div`
   max-width: 1200px;
@@ -124,90 +120,37 @@ const TrustLogo = styled.div`
 
 const Home = () => {
   return (
-    <>
-      <Header />
-      
+    <Container>
       <Hero>
         <ContainerSm>
-          <h1>Qualitative & Quantitative analysis to make precise, actionable financial decisions</h1>
-          <p>Get actionable insights from earnings calls and market data without reading long transcripts</p>
+          <h1>Welcome to Coffers.ai</h1>
+          <p>Test page - if you can see this, React is working!</p>
           <HeroActions>
-            <Button as={Link} to="/register" variant="primary" size="large">
-              Get started
-            </Button>
-            <Button as={Link} to="#demo" variant="secondary" size="large">
-              See a demo
-            </Button>
+            <Link to="/login" style={{ 
+              background: '#0A0A0A', 
+              color: 'white', 
+              padding: '12px 24px', 
+              textDecoration: 'none', 
+              borderRadius: '8px',
+              display: 'inline-block',
+              marginRight: '16px'
+            }}>
+              Go to Login
+            </Link>
+            <Link to="/dashboard" style={{ 
+              background: '#F3F4F6', 
+              color: '#0A0A0A', 
+              padding: '12px 24px', 
+              textDecoration: 'none', 
+              borderRadius: '8px',
+              display: 'inline-block'
+            }}>
+              Go to Dashboard
+            </Link>
           </HeroActions>
         </ContainerSm>
       </Hero>
-
-      <ValueGrid id="product">
-        <Container>
-          <h2>Everything you need for earnings analysis</h2>
-          <Grid>
-            <Card
-              icon="🎙️"
-              title="Live Earnings Calls"
-              description="Real-time earnings call transcripts with AI-powered analysis and key moment extraction"
-            />
-            <Card
-              icon="📊"
-              title="Market Data Analysis"
-              description="Comprehensive market data integration with contextual analysis and correlation insights"
-            />
-            <Card
-              icon="🤖"
-              title="AI-Powered Insights"
-              description="Instant analysis of earnings calls with sentiment tracking and trend identification"
-            />
-            <Card
-              icon="⚡"
-              title="Real-Time Updates"
-              description="Live market data feeds with earnings call notifications and price correlation alerts"
-            />
-          </Grid>
-        </Container>
-      </ValueGrid>
-
-      <HowItWorks>
-        <Container>
-          <h2>How it works</h2>
-          <Steps>
-            <Step>
-              <StepNumber>1</StepNumber>
-              <h3>Search company</h3>
-              <p>Find any public company by ticker symbol or name. Access comprehensive earnings data and market analysis</p>
-            </Step>
-            <Step>
-              <StepNumber>2</StepNumber>
-              <h3>Join earnings call</h3>
-              <p>Join live earnings calls or access archived transcripts. Real-time transcription with instant AI processing</p>
-            </Step>
-            <Step>
-              <StepNumber>3</StepNumber>
-              <h3>Analyze with AI</h3>
-              <p>Get instant insights, key moments, sentiment analysis, and actionable recommendations powered by advanced AI</p>
-            </Step>
-          </Steps>
-        </Container>
-      </HowItWorks>
-
-      <Trust>
-        <Container>
-          <h3>Trusted by financial professionals</h3>
-          <TrustLogos>
-            <TrustLogo>Goldman Sachs</TrustLogo>
-            <TrustLogo>Morgan Stanley</TrustLogo>
-            <TrustLogo>BlackRock</TrustLogo>
-            <TrustLogo>Vanguard</TrustLogo>
-            <TrustLogo>Fidelity</TrustLogo>
-          </TrustLogos>
-        </Container>
-      </Trust>
-
-      <Footer />
-    </>
+    </Container>
   )
 }
 
