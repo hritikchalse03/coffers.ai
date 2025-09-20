@@ -110,13 +110,17 @@ const generateTokens = (user) => {
 
 // Routes
 
-// Serve HTML pages
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// Serve React build files
+app.use(express.static(path.join(__dirname, 'client/dist')));
 
+// Serve HTML pages (fallback for non-React pages)
 app.get('/pages/:page', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', req.params.page));
+});
+
+// Catch all handler: send back React's index.html file for any non-API routes
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
 
 // Auth Routes
