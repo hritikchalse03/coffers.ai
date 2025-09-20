@@ -144,6 +144,50 @@ coffers-ai/
 - CORS enabled for cross-origin requests
 - Input validation and sanitization
 
+## 🚀 Prototype Auth Mode
+
+The application includes a **Prototype Auth Mode** that bypasses traditional authentication for rapid prototyping and demos.
+
+### How Prototype Mode Works
+
+**Configuration:**
+- Controlled by `PROTOTYPE_AUTH` environment variable (defaults to `true`)
+- Client-side: `VITE_PROTOTYPE_AUTH` (defaults to `true`)
+- Server-side: `PROTOTYPE_AUTH` (defaults to `true`)
+
+**Authentication Flow:**
+1. **Login/Register**: Only requires a first name (no email/password validation)
+2. **Dashboard Access**: Always accessible without authentication
+3. **Data Storage**: Uses localStorage for persistence (`auth` and `profile` keys)
+4. **Server Bypass**: All protected API routes are accessible without tokens
+
+**Key Features:**
+- ✅ **No credential validation** anywhere (client or server)
+- ✅ **Login/Sign-up → Dashboard** unconditionally on submit
+- ✅ **First name only** required and displayed on dashboard
+- ✅ **Inline firstName prompt** if missing (direct dashboard access)
+- ✅ **No server redirects** to login in Prototype Mode
+- ✅ **Consistent styling** (white bg, black text, professional)
+- ✅ **Logout functionality** clears localStorage and redirects to home
+
+**User Experience:**
+- Visiting `/` or `/login` → Shows login UI with only firstName field
+- On submit → Saves firstName → Sets auth=1 → Redirects to `/dashboard`
+- Visiting `/dashboard` directly → Shows inline firstName prompt if missing
+- Header shows "Welcome, {firstName}" or "Welcome, there" as fallback
+- Logout button clears all data and returns to home page
+
+**Turning Off Prototype Mode:**
+1. Set `VITE_PROTOTYPE_AUTH=false` in client environment
+2. Set `PROTOTYPE_AUTH=false` in server environment
+3. Restart the application
+4. Normal authentication flow will be restored
+
+**Vercel Deployment:**
+- No server redirects to login are active in Prototype Mode
+- All routes are accessible without authentication
+- Perfect for demos and rapid prototyping
+
 ## 📈 Performance
 
 - Static file serving for optimal performance

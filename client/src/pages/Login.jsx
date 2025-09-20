@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/Button'
+import { PROTOTYPE_CONFIG } from '../config/prototype'
 
 const Container = styled.div`
   max-width: 1200px;
@@ -171,6 +172,7 @@ const Message = styled.div`
 
 const Login = () => {
   const [formData, setFormData] = useState({
+    firstName: '',
     email: '',
     password: '',
     remember: false
@@ -223,37 +225,64 @@ const Login = () => {
     // Clear previous errors
     setErrors({})
 
-    // Validate form
-    let isValid = true
+    if (PROTOTYPE_CONFIG.enabled) {
+      // In prototype mode, only validate firstName
+      let isValid = true
 
-    if (!formData.email) {
-      showFieldError('email', 'Email is required')
-      isValid = false
-    } else if (!validateEmail(formData.email)) {
-      showFieldError('email', 'Please enter a valid email address')
-      isValid = false
-    }
+      if (!formData.firstName || !formData.firstName.trim()) {
+        showFieldError('firstName', 'First name is required')
+        isValid = false
+      }
 
-    if (!formData.password) {
-      showFieldError('password', 'Password is required')
-      isValid = false
-    }
+      if (!isValid) return
 
-    if (!isValid) return
+      setLoading(true)
 
-    setLoading(true)
+      try {
+        await login({ firstName: formData.firstName })
+        showMessage('Welcome! Redirecting to dashboard...', 'success')
+        
+        setTimeout(() => {
+          navigate('/dashboard')
+        }, 1000)
+      } catch (error) {
+        showMessage(error.message || 'Login failed. Please try again.', 'error')
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      // Normal auth flow
+      let isValid = true
 
-    try {
-      await login(formData)
-      showMessage('Welcome back! Setting up your profile...', 'success')
-      
-      setTimeout(() => {
-        navigate('/profile-setup')
-      }, 1000)
-    } catch (error) {
-      showMessage(error.message || 'Login failed. Please try again.', 'error')
-    } finally {
-      setLoading(false)
+      if (!formData.email) {
+        showFieldError('email', 'Email is required')
+        isValid = false
+      } else if (!validateEmail(formData.email)) {
+        showFieldError('email', 'Please enter a valid email address')
+        isValid = false
+      }
+
+      if (!formData.password) {
+        showFieldError('password', 'Password is required')
+        isValid = false
+      }
+
+      if (!isValid) return
+
+      setLoading(true)
+
+      try {
+        await login(formData)
+        showMessage('Welcome back! Setting up your profile...', 'success')
+        
+        setTimeout(() => {
+          navigate('/profile-setup')
+        }, 1000)
+      } catch (error) {
+        showMessage(error.message || 'Login failed. Please try again.', 'error')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -275,49 +304,70 @@ const Login = () => {
             </Message>
 
             <form onSubmit={handleSubmit}>
-              <FormGroup>
-                <FormLabel htmlFor="email">Email address</FormLabel>
-                <FormInput
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Enter your email"
-                  className={errors.email ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.email}>{errors.email}</FormError>
-              </FormGroup>
-
-              <FormGroup>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <FormInput
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Enter your password"
-                  className={errors.password ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.password}>{errors.password}</FormError>
-              </FormGroup>
-
-              <FormOptions>
-                <CheckboxGroup>
-                  <Checkbox
-                    type="checkbox"
-                    id="remember"
-                    name="remember"
-                    checked={formData.remember}
+              {PROTOTYPE_CONFIG.enabled ? (
+                <FormGroup>
+                  <FormLabel htmlFor="firstName">First name</FormLabel>
+                  <FormInput
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
                     onChange={handleInputChange}
+                    placeholder="Enter your first name"
+                    className={errors.firstName ? 'error' : ''}
+                    required
                   />
-                  <CheckboxLabel htmlFor="remember">Remember me</CheckboxLabel>
-                </CheckboxGroup>
-                <ForgotPassword to="#forgot">Forgot password?</ForgotPassword>
-              </FormOptions>
+                  <FormError show={!!errors.firstName}>{errors.firstName}</FormError>
+                </FormGroup>
+              ) : (
+                <>
+                  <FormGroup>
+                    <FormLabel htmlFor="email">Email address</FormLabel>
+                    <FormInput
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="Enter your email"
+                      className={errors.email ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.email}>{errors.email}</FormError>
+                  </FormGroup>
+
+                  <FormGroup>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormInput
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      placeholder="Enter your password"
+                      className={errors.password ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.password}>{errors.password}</FormError>
+                  </FormGroup>
+                </>
+              )}
+
+              {!PROTOTYPE_CONFIG.enabled && (
+                <FormOptions>
+                  <CheckboxGroup>
+                    <Checkbox
+                      type="checkbox"
+                      id="remember"
+                      name="remember"
+                      checked={formData.remember}
+                      onChange={handleInputChange}
+                    />
+                    <CheckboxLabel htmlFor="remember">Remember me</CheckboxLabel>
+                  </CheckboxGroup>
+                  <ForgotPassword to="#forgot">Forgot password?</ForgotPassword>
+                </FormOptions>
+              )}
 
               <Button
                 type="submit"
@@ -326,7 +376,7 @@ const Login = () => {
                 loading={loading}
                 disabled={loading}
               >
-                Sign in
+                {PROTOTYPE_CONFIG.enabled ? 'Continue to Dashboard' : 'Sign in'}
               </Button>
             </form>
 

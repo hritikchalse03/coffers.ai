@@ -1,6 +1,7 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { PROTOTYPE_CONFIG } from '../config/prototype'
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useAuth()
@@ -20,6 +21,11 @@ const ProtectedRoute = ({ children }) => {
         }} />
       </div>
     )
+  }
+
+  // In prototype mode, always allow access to protected routes
+  if (PROTOTYPE_CONFIG.enabled) {
+    return children
   }
 
   if (!isAuthenticated()) {

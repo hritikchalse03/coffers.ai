@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
 import Button from '../components/Button'
+import { PROTOTYPE_CONFIG } from '../config/prototype'
 
 const Container = styled.div`
   max-width: 1200px;
@@ -258,78 +259,105 @@ const Register = () => {
     // Clear previous errors
     setErrors({})
 
-    // Validate form
-    let isValid = true
+    if (PROTOTYPE_CONFIG.enabled) {
+      // In prototype mode, only validate firstName
+      let isValid = true
 
-    if (!formData.firstName.trim()) {
-      showFieldError('firstName', 'First name is required')
-      isValid = false
-    }
+      if (!formData.firstName || !formData.firstName.trim()) {
+        showFieldError('firstName', 'First name is required')
+        isValid = false
+      }
 
-    if (!formData.lastName.trim()) {
-      showFieldError('lastName', 'Last name is required')
-      isValid = false
-    }
+      if (!isValid) return
 
-    if (!formData.email) {
-      showFieldError('email', 'Email is required')
-      isValid = false
-    } else if (!validateEmail(formData.email)) {
-      showFieldError('email', 'Please enter a valid email address')
-      isValid = false
-    }
+      setLoading(true)
 
-    if (!formData.password) {
-      showFieldError('password', 'Password is required')
-      isValid = false
-    } else if (!validatePassword(formData.password)) {
-      showFieldError('password', 'Password must be at least 8 characters')
-      isValid = false
-    }
+      try {
+        await register({ firstName: formData.firstName })
+        showMessage('Welcome! Redirecting to dashboard...', 'success')
+        
+        setTimeout(() => {
+          navigate('/dashboard')
+        }, 1000)
+      } catch (error) {
+        showMessage(error.message || 'Registration failed. Please try again.', 'error')
+      } finally {
+        setLoading(false)
+      }
+    } else {
+      // Normal auth flow
+      let isValid = true
 
-    if (!formData.confirmPassword) {
-      showFieldError('confirmPassword', 'Please confirm your password')
-      isValid = false
-    } else if (formData.password !== formData.confirmPassword) {
-      showFieldError('confirmPassword', 'Passwords do not match')
-      isValid = false
-    }
-    
-    if (!formData.company.trim()) {
-      showFieldError('company', 'Company/Organization is required')
-      isValid = false
-    }
+      if (!formData.firstName.trim()) {
+        showFieldError('firstName', 'First name is required')
+        isValid = false
+      }
 
-    if (!formData.role) {
-      showFieldError('role', 'Please select your role')
-      isValid = false
-    }
+      if (!formData.lastName.trim()) {
+        showFieldError('lastName', 'Last name is required')
+        isValid = false
+      }
 
-    if (!formData.investmentFocus) {
-      showFieldError('investmentFocus', 'Please select your investment focus')
-      isValid = false
-    }
-    
-    if (!formData.terms) {
-      showMessage('Please accept the Terms of Service and Privacy Policy', 'error')
-      isValid = false
-    }
+      if (!formData.email) {
+        showFieldError('email', 'Email is required')
+        isValid = false
+      } else if (!validateEmail(formData.email)) {
+        showFieldError('email', 'Please enter a valid email address')
+        isValid = false
+      }
 
-    if (!isValid) return
+      if (!formData.password) {
+        showFieldError('password', 'Password is required')
+        isValid = false
+      } else if (!validatePassword(formData.password)) {
+        showFieldError('password', 'Password must be at least 8 characters')
+        isValid = false
+      }
 
-    setLoading(true)
-
-    try {
-      await register(formData)
-      showMessage('Welcome to Coffers.ai! Your financial research account is ready. Redirecting...', 'success')
+      if (!formData.confirmPassword) {
+        showFieldError('confirmPassword', 'Please confirm your password')
+        isValid = false
+      } else if (formData.password !== formData.confirmPassword) {
+        showFieldError('confirmPassword', 'Passwords do not match')
+        isValid = false
+      }
       
-      setTimeout(() => {
-        navigate('/profile-setup')
-      }, 1000)
-    } catch (error) {
-      showMessage(error.message || 'Registration failed. Please try again.', 'error')
-    } finally {
-      setLoading(false)
+      if (!formData.company.trim()) {
+        showFieldError('company', 'Company/Organization is required')
+        isValid = false
+      }
+
+      if (!formData.role) {
+        showFieldError('role', 'Please select your role')
+        isValid = false
+      }
+
+      if (!formData.investmentFocus) {
+        showFieldError('investmentFocus', 'Please select your investment focus')
+        isValid = false
+      }
+      
+      if (!formData.terms) {
+        showMessage('Please accept the Terms of Service and Privacy Policy', 'error')
+        isValid = false
+      }
+
+      if (!isValid) return
+
+      setLoading(true)
+
+      try {
+        await register(formData)
+        showMessage('Welcome to Coffers.ai! Your financial research account is ready. Redirecting...', 'success')
+        
+        setTimeout(() => {
+          navigate('/profile-setup')
+        }, 1000)
+      } catch (error) {
+        showMessage(error.message || 'Registration failed. Please try again.', 'error')
+      } finally {
+        setLoading(false)
+      }
     }
   }
 
@@ -351,7 +379,7 @@ const Register = () => {
             </Message>
 
             <form onSubmit={handleSubmit}>
-              <FormRow>
+              {PROTOTYPE_CONFIG.enabled ? (
                 <FormGroup>
                   <FormLabel htmlFor="firstName">First name</FormLabel>
                   <FormInput
@@ -360,148 +388,169 @@ const Register = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="John"
+                    placeholder="Enter your first name"
                     className={errors.firstName ? 'error' : ''}
                     required
                   />
                   <FormError show={!!errors.firstName}>{errors.firstName}</FormError>
                 </FormGroup>
-                
-                <FormGroup>
-                  <FormLabel htmlFor="lastName">Last name</FormLabel>
-                  <FormInput
-                    type="text"
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleInputChange}
-                    placeholder="Doe"
-                    className={errors.lastName ? 'error' : ''}
-                    required
-                  />
-                  <FormError show={!!errors.lastName}>{errors.lastName}</FormError>
-                </FormGroup>
-              </FormRow>
+              ) : (
+                <FormRow>
+                  <FormGroup>
+                    <FormLabel htmlFor="firstName">First name</FormLabel>
+                    <FormInput
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      placeholder="John"
+                      className={errors.firstName ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.firstName}>{errors.firstName}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="lastName">Last name</FormLabel>
+                    <FormInput
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      placeholder="Doe"
+                      className={errors.lastName ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.lastName}>{errors.lastName}</FormError>
+                  </FormGroup>
+                </FormRow>
+              )}
               
-              <FormGroup>
-                <FormLabel htmlFor="email">Email address</FormLabel>
-                <FormInput
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="john@example.com"
-                  className={errors.email ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.email}>{errors.email}</FormError>
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="password">Password</FormLabel>
-                <FormInput
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  placeholder="Create a strong password"
-                  className={errors.password ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.password}>{errors.password}</FormError>
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="confirmPassword">Confirm password</FormLabel>
-                <FormInput
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  placeholder="Confirm your password"
-                  className={errors.confirmPassword ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.confirmPassword}>{errors.confirmPassword}</FormError>
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="company">Company/Organization</FormLabel>
-                <FormInput
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formData.company}
-                  onChange={handleInputChange}
-                  placeholder="e.g., Goldman Sachs, BlackRock, or Independent"
-                  className={errors.company ? 'error' : ''}
-                  required
-                />
-                <FormError show={!!errors.company}>{errors.company}</FormError>
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="role">Role</FormLabel>
-                <FormSelect
-                  id="role"
-                  name="role"
-                  value={formData.role}
-                  onChange={handleInputChange}
-                  className={errors.role ? 'error' : ''}
-                  required
-                >
-                  <option value="">Select your role</option>
-                  <option value="analyst">Financial Analyst</option>
-                  <option value="portfolio-manager">Portfolio Manager</option>
-                  <option value="trader">Trader</option>
-                  <option value="researcher">Research Analyst</option>
-                  <option value="investor">Individual Investor</option>
-                  <option value="student">Student</option>
-                  <option value="other">Other</option>
-                </FormSelect>
-                <FormError show={!!errors.role}>{errors.role}</FormError>
-              </FormGroup>
-              
-              <FormGroup>
-                <FormLabel htmlFor="investmentFocus">Investment Focus</FormLabel>
-                <FormSelect
-                  id="investmentFocus"
-                  name="investmentFocus"
-                  value={formData.investmentFocus}
-                  onChange={handleInputChange}
-                  className={errors.investmentFocus ? 'error' : ''}
-                  required
-                >
-                  <option value="">Select your focus</option>
-                  <option value="equities">Equities</option>
-                  <option value="bonds">Fixed Income</option>
-                  <option value="commodities">Commodities</option>
-                  <option value="crypto">Cryptocurrency</option>
-                  <option value="real-estate">Real Estate</option>
-                  <option value="multi-asset">Multi-Asset</option>
-                  <option value="other">Other</option>
-                </FormSelect>
-                <FormError show={!!errors.investmentFocus}>{errors.investmentFocus}</FormError>
-              </FormGroup>
-              
-              <FormOptions>
-                <CheckboxGroup>
-                  <Checkbox
-                    type="checkbox"
-                    id="terms"
-                    name="terms"
-                    checked={formData.terms}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <CheckboxLabel htmlFor="terms">
-                    I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a> for Coffers.ai financial research platform
-                  </CheckboxLabel>
-                </CheckboxGroup>
-              </FormOptions>
+              {!PROTOTYPE_CONFIG.enabled && (
+                <>
+                  <FormGroup>
+                    <FormLabel htmlFor="email">Email address</FormLabel>
+                    <FormInput
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="john@example.com"
+                      className={errors.email ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.email}>{errors.email}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="password">Password</FormLabel>
+                    <FormInput
+                      type="password"
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      placeholder="Create a strong password"
+                      className={errors.password ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.password}>{errors.password}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="confirmPassword">Confirm password</FormLabel>
+                    <FormInput
+                      type="password"
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleInputChange}
+                      placeholder="Confirm your password"
+                      className={errors.confirmPassword ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.confirmPassword}>{errors.confirmPassword}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="company">Company/Organization</FormLabel>
+                    <FormInput
+                      type="text"
+                      id="company"
+                      name="company"
+                      value={formData.company}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Goldman Sachs, BlackRock, or Independent"
+                      className={errors.company ? 'error' : ''}
+                      required
+                    />
+                    <FormError show={!!errors.company}>{errors.company}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="role">Role</FormLabel>
+                    <FormSelect
+                      id="role"
+                      name="role"
+                      value={formData.role}
+                      onChange={handleInputChange}
+                      className={errors.role ? 'error' : ''}
+                      required
+                    >
+                      <option value="">Select your role</option>
+                      <option value="analyst">Financial Analyst</option>
+                      <option value="portfolio-manager">Portfolio Manager</option>
+                      <option value="trader">Trader</option>
+                      <option value="researcher">Research Analyst</option>
+                      <option value="investor">Individual Investor</option>
+                      <option value="student">Student</option>
+                      <option value="other">Other</option>
+                    </FormSelect>
+                    <FormError show={!!errors.role}>{errors.role}</FormError>
+                  </FormGroup>
+                  
+                  <FormGroup>
+                    <FormLabel htmlFor="investmentFocus">Investment Focus</FormLabel>
+                    <FormSelect
+                      id="investmentFocus"
+                      name="investmentFocus"
+                      value={formData.investmentFocus}
+                      onChange={handleInputChange}
+                      className={errors.investmentFocus ? 'error' : ''}
+                      required
+                    >
+                      <option value="">Select your focus</option>
+                      <option value="equities">Equities</option>
+                      <option value="bonds">Fixed Income</option>
+                      <option value="commodities">Commodities</option>
+                      <option value="crypto">Cryptocurrency</option>
+                      <option value="real-estate">Real Estate</option>
+                      <option value="multi-asset">Multi-Asset</option>
+                      <option value="other">Other</option>
+                    </FormSelect>
+                    <FormError show={!!errors.investmentFocus}>{errors.investmentFocus}</FormError>
+                  </FormGroup>
+                  
+                  <FormOptions>
+                    <CheckboxGroup>
+                      <Checkbox
+                        type="checkbox"
+                        id="terms"
+                        name="terms"
+                        checked={formData.terms}
+                        onChange={handleInputChange}
+                        required
+                      />
+                      <CheckboxLabel htmlFor="terms">
+                        I agree to the <a href="#terms">Terms of Service</a> and <a href="#privacy">Privacy Policy</a> for Coffers.ai financial research platform
+                      </CheckboxLabel>
+                    </CheckboxGroup>
+                  </FormOptions>
+                </>
+              )}
               
               <Button
                 type="submit"
@@ -510,7 +559,7 @@ const Register = () => {
                 loading={loading}
                 disabled={loading}
               >
-                Create account
+                {PROTOTYPE_CONFIG.enabled ? 'Continue to Dashboard' : 'Create account'}
               </Button>
             </form>
             

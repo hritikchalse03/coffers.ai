@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../contexts/AuthContext'
+import { PROTOTYPE_CONFIG } from '../config/prototype'
 import Button from './Button'
 
 const HeaderContainer = styled.header`
@@ -105,10 +106,12 @@ const LogoutBtn = styled.button`
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth()
   const location = useLocation()
+  const navigate = useNavigate()
 
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       logout()
+      navigate('/')
     }
   }
 
@@ -117,7 +120,7 @@ const Header = () => {
       <Nav>
         <Logo to="/">●●● Coffers.ai</Logo>
         
-        {isAuthenticated() ? (
+        {isAuthenticated() || PROTOTYPE_CONFIG.enabled ? (
           <>
             <NavLinks>
               <NavLink 

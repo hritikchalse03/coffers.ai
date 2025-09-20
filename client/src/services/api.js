@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { PROTOTYPE_CONFIG } from '../config/prototype'
 
 class ApiService {
   constructor() {
@@ -15,7 +16,7 @@ class ApiService {
     // Request interceptor to add auth token
     this.client.interceptors.request.use(
       (config) => {
-        if (this.token) {
+        if (this.token && !PROTOTYPE_CONFIG.enabled) {
           config.headers.Authorization = `Bearer ${this.token}`
         }
         return config
@@ -29,7 +30,7 @@ class ApiService {
     this.client.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 && !PROTOTYPE_CONFIG.enabled) {
           // Token expired or invalid
           this.token = null
           localStorage.removeItem('coffers_token')

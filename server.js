@@ -7,6 +7,7 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const PROTOTYPE_AUTH = process.env.PROTOTYPE_AUTH !== 'false'; // Default to true
 
 // Middleware
 app.use(cors());
@@ -82,6 +83,12 @@ let events = [
 
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
+    // In prototype mode, bypass authentication
+    if (PROTOTYPE_AUTH) {
+        req.user = { id: 'prototype-user', email: 'prototype@example.com' };
+        return next();
+    }
+
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -126,6 +133,15 @@ app.get('*', (req, res) => {
 // Auth Routes
 app.post('/api/auth/register', async (req, res) => {
     try {
+        if (PROTOTYPE_AUTH) {
+            // In prototype mode, just return success
+            const { firstName } = req.body;
+            return res.status(201).json({
+                message: 'Registration successful',
+                user: { firstName: firstName || 'User' }
+            });
+        }
+
         const { firstName, lastName, email, password, company, role, investmentFocus } = req.body;
 
         // Check if user already exists
@@ -184,6 +200,15 @@ app.post('/api/auth/register', async (req, res) => {
 
 app.post('/api/auth/login', async (req, res) => {
     try {
+        if (PROTOTYPE_AUTH) {
+            // In prototype mode, just return success
+            const { firstName } = req.body;
+            return res.json({
+                message: 'Login successful',
+                user: { firstName: firstName || 'User' }
+            });
+        }
+
         const { email, password } = req.body;
 
         // Find user
@@ -429,4 +454,10 @@ app.listen(PORT, () => {
     
     console.log(`📊 API endpoints available at http://localhost:${PORT}/api`);
     console.log(`🌐 Frontend available at http://localhost:${PORT}`);
+    
+    if (PROTOTYPE_AUTH) {
+        console.log(`🔓 PROTOTYPE MODE ENABLED - Authentication bypassed for all routes`);
+    } else {
+        console.log(`🔒 NORMAL AUTH MODE - Authentication required for protected routes`);
+    }
 });
