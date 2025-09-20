@@ -12,7 +12,7 @@ const PROTOTYPE_AUTH = process.env.PROTOTYPE_AUTH !== 'false'; // Default to tru
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static('.'));
+// Remove static file serving from root directory to avoid conflicts
 
 // In-memory database (replace with real database in production)
 let users = [];
@@ -117,18 +117,15 @@ const generateTokens = (user) => {
 
 // Routes
 
-// Serve React build files
-app.use(express.static(path.join(__dirname, 'client/dist')));
+// Serve React build files (disabled in development mode)
+// app.use(express.static(path.join(__dirname, 'client/dist')));
 
 // Serve HTML pages (fallback for non-React pages)
 app.get('/pages/:page', (req, res) => {
     res.sendFile(path.join(__dirname, 'pages', req.params.page));
 });
 
-// Catch all handler: send back React's index.html file for any non-API routes
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/dist/index.html'));
-});
+// Catch all handler moved to end of file
 
 // Auth Routes
 app.post('/api/auth/register', async (req, res) => {
@@ -447,6 +444,16 @@ setInterval(updatePrices, 30000);
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// Catch all handler: send back React's index.html file for any non-API routes
+app.get('*', (req, res) => {
+    // Only serve HTML for non-API routes
+    if (!req.path.startsWith('/api')) {
+        res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+    } else {
+        res.status(404).json({ error: 'API endpoint not found' });
+    }
 });
 
 app.listen(PORT, () => {
